@@ -40,7 +40,7 @@
 					<li class="active"><a href="<c:url value="/taiji/view/article"/>">자유 게시판</a></li>
 					<li><a href="<c:url value="/taiji/view/test"/>">서빠력 테스트</a></li>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">사진모음 <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#">태지보이스</a></li>
 							<li><a href="#">방황기</a></li>
@@ -65,6 +65,10 @@
 	
 	<div class="jumbotron">
 	  <div class="container">
+	  <div class="panel panel-primary" id="viewPanel" style="display: none;">
+		  <div class="panel-heading" id="viewTitle"></div>	
+		  <div class="panel-body" id="viewContent"></div>
+	</div>
 	  <div class="panel panel-primary">
 		  <div class="panel-heading">S.T.J 자유 게시판</div>	
 		  <div class="panel-body">
@@ -101,12 +105,31 @@
 		var page=0;
 		$('#prev,#next').on('click',function(e){
 			if(!$(this).parent().hasClass('disabled')){
-				getQuestion(this.id);
+				$('#viewPanel').hide();
+				getArticle(this.id);
 			}else{
 				e.preventDefault();
 			}
 		});
-		function getQuestion(type){
+		
+		function getView(seq){
+			$.ajax({
+				url : "<c:url value="/taiji/article/view/"/>"+seq,
+				success : function(result){
+					var resultData = JSON.parse(result);
+					console.log(resultData);
+					$('#viewTitle').text(resultData.title);
+					$('#viewContent').html(resultData.content);
+					$('#viewPanel').show();
+					$(window).scrollTop(0);
+				},
+				error : function(result){
+					console.log(result);
+				}
+			});
+		}
+		
+		function getArticle(type){
 			if(type=='prev')page>1?page--:page;
 			else if(type=='next')page++;
 			console.log(page);
@@ -134,7 +157,13 @@
 						var $userTd = $("<td>",{text:data.userName});
 						var $userLikeTd = $("<td>",{text:data.userLike});
 						var $regDateTd = $("<td>",{text:data.regDate});
-						var $tr = $("<tr>").append($seqTd).append($titleTd).append($userTd).append($regDateTd).append($userLikeTd);
+						var $tr = $("<tr>",{
+											id:data.seq,
+											click:function(){
+												$(this).addClass('active');
+												getView($(this).attr('id'));
+											}
+								}).append($seqTd).append($titleTd).append($userTd).append($regDateTd).append($userLikeTd);
 						$('#articleBody').append($tr);
 					}
 				},
@@ -143,7 +172,7 @@
 				}
 			});
 		}
-		getQuestion('next');
+		getArticle('next');
 	});
 	</script>
 </body>

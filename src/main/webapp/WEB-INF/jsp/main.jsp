@@ -32,7 +32,7 @@
 					<li><a href="<c:url value="/taiji/view/article"/>">자유 게시판</a></li>
 					<li><a href="<c:url value="/taiji/view/test"/>">서빠력 테스트</a></li>
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">사진모음 <span class="caret"></span></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							<li><a href="#">태지보이스</a></li>
 							<li><a href="#">방황기</a></li>
