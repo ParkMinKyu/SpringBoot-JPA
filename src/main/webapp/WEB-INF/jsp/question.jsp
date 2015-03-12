@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +38,7 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="<c:url value="/taiji/view/article"/>">자유 게시판</a></li>
-					<li class="active"><a href="<c:url value="/taiji/view/test"/>">서빠력 테스트</a></li>
+					<li class="active"><a href="<c:url value="/taiji/view/question"/>">서빠력 테스트</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
@@ -94,8 +94,12 @@
 	<script type="text/javascript">
 	$(function(){
 		var num=0;
-		$('#prev,#next').on('click',function(){
-			getQuestion(this.id);
+		$('#prev,#next').on('click',function(e){
+			if(!$(this).parent().hasClass('disabled')){
+				getQuestion(this.id);
+			}else{
+				e.preventDefault();
+			}
 		});
 		
 		$('.list-group > a').on("click",function(){
@@ -105,8 +109,19 @@
 		
 		function getQuestion(type){
 			if(type=='prev')num>1?num--:num;
-			else if(type=='next')num++;
+			else if(type=='next' && num < 20)num++;
 			console.log(num);
+			if(num == 1){
+				$('.next').removeClass('disabled');
+				$('.previous').addClass('disabled');
+			}
+			else if(num == 20){
+				$('.previous').removeClass('disabled');
+				$('.next').addClass('disabled');
+			}else{
+				$('.previous').removeClass('disabled');
+				$('.next').removeClass('disabled');
+			}
 			$.ajax({
 				url : "<c:url value="/taiji/question/"/>"+num,
 				success : function(result){

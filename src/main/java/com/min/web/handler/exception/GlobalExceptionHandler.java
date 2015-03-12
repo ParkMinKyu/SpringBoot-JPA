@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.min.web.handler.exception.support.DomainNullPointSupport;
+import com.min.web.handler.exception.support.DomainNullPointException;
+import com.min.web.handler.exception.support.QuestionNumberException;
 import com.min.web.handler.exception.vo.ErrorVO;
 
 @ControllerAdvice
@@ -16,7 +17,7 @@ public class GlobalExceptionHandler {
 	
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = NullPointerException.class)
-	public @ResponseBody ErrorVO nullpointHandler(DomainNullPointSupport exception, HttpServletRequest req){
+	public @ResponseBody ErrorVO nullPointerException(DomainNullPointException exception, HttpServletRequest req){
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 		ErrorVO errorVO = new ErrorVO();
 		errorVO.setCode(status.value());
@@ -26,4 +27,18 @@ public class GlobalExceptionHandler {
 		errorVO.setMoreInfo("request URL : " + req.getRequestURL());
 		return errorVO; 
 	}
+
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ExceptionHandler(value = RuntimeException.class)
+	public @ResponseBody ErrorVO arrayIndexOutOfBoundsException(QuestionNumberException exception, HttpServletRequest req){
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		ErrorVO errorVO = new ErrorVO();
+		errorVO.setCode(status.value());
+		errorVO.setStatus(status.ordinal());
+		errorVO.setMessage(exception.getLocalizedMessage());
+		errorVO.setCustomMessage("The Last Question Number is 20, Your Question Number is "+ exception.getNum());
+		errorVO.setMoreInfo("request URL : " + req.getRequestURL());
+		return errorVO; 
+	}
+
 }

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +38,7 @@
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="<c:url value="/taiji/view/article"/>">자유 게시판</a></li>
-					<li><a href="<c:url value="/taiji/view/test"/>">서빠력 테스트</a></li>
+					<li><a href="<c:url value="/taiji/view/question"/>">서빠력 테스트</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
@@ -68,6 +68,34 @@
 	  <div class="panel panel-primary" id="viewPanel" style="display: none;">
 		  <div class="panel-heading" id="viewTitle"></div>	
 		  <div class="panel-body" id="viewContent"></div>
+	</div>
+	  <div class="panel panel-primary" id="commentPanel" style="display: none;">
+		  <div class="panel-heading">댓글(<span id="commentCount"></span>)</div>	
+		  <div class="panel-body">
+		  		<!-- comment 영역 -->
+		  		<ul class="list-group" id="commentList">
+				</ul>
+		  		<!-- comment 영역 -->
+			 <div id="commentAlert"></div>		  
+			 
+			 <form onsubmit="return false;">
+			 <input type="hidden" id="articleSeq">
+			  <div class="form-group">
+			    <label for="userName">User Name</label>
+			    <input type="text" class="form-control" id="userName" placeholder="userName">
+			  </div>
+			  <div class="form-group">
+			    <label for="password">Password</label>
+			    <input type="password" class="form-control" id="password" placeholder="password">
+			  </div>
+			  <div class="form-group">
+			    <label for="content">content</label>
+			    <textarea class="form-control" id="content" rows="3"></textarea>
+			  </div>
+			  <button type="submit" id="saveCommentBtn" class="btn btn-default btn-lg pull-right">등록 <span class="glyphicon glyphicon-save"></span></button>
+			</form>
+			 
+		  </div>
 	</div>
 	  <div class="panel panel-primary">
 		  <div class="panel-heading">S.T.J 자유 게시판</div>	
@@ -106,22 +134,46 @@
 		$('#prev,#next').on('click',function(e){
 			if(!$(this).parent().hasClass('disabled')){
 				$('#viewPanel').hide();
+				$('#commentPanel').hide();
 				getArticle(this.id);
 			}else{
 				e.preventDefault();
 			}
 		});
 		
+		$('#saveCommentBtn').on("click",function(){
+			$('#commentAlert').html('');
+			var comment = {articleSeq : $('#articleSeq').val(), userName: $('#userName').val(), password: $('#password').val(), content: $('#content').val()}; 
+			$.ajax({
+				url : "<c:url value="/taiji/article/comment/save"/>",
+				data: JSON.stringify(comment),
+				dataType : "json",
+				contentType: "application/json; charset=utf-8",
+				type:'post',
+				success : function(result){
+					getView(result.articleSeq);
+				},
+				error : function(result){
+					for(var data in result.responseJSON){
+						var html = '<div class="alert alert-warning alert-dismissible" role="alert" id="commentAlert">';
+						html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="false">&times;</span></button>';
+						html += '<strong>Warning!</strong> <a href="#'+result.responseJSON[data].field+'" class="alert-link">' + result.responseJSON[data].field + '</a>의 '+ result.responseJSON[data].defaultMessage + '</div>';
+						$('#commentAlert').append(html);
+						location.href="#commentAlert";
+					}
+				}
+			});
+		});
+		
+		function setFocus(id){
+			$('#'+id).fucus();
+		}
+		
 		function getView(seq){
 			$.ajax({
 				url : "<c:url value="/taiji/article/view/"/>"+seq,
 				success : function(result){
-					var resultData = JSON.parse(result);
-					console.log(resultData);
-					$('#viewTitle').text(resultData.title);
-					$('#viewContent').html(resultData.content);
-					$('#viewPanel').show();
-					$(window).scrollTop(0);
+					createViewAndComment(result);		
 				},
 				error : function(result){
 					console.log(result);
@@ -129,6 +181,34 @@
 			});
 		}
 		
+		//뷰 생성
+		function createViewAndComment(result){
+			var resultData = JSON.parse(result);
+			var article = resultData.articleResponse; 
+			var comments = resultData.commentsResponse;
+			console.log(resultData);
+			
+			$('#viewTitle').text(article.title);
+			$('#viewContent').html(article.content);
+			$('#commentCount').text(comments.length);
+			
+			
+			$('#commentList').html('');
+			for(var i = 0 ; i < comments.length ; i ++){
+				var c = comments[i];
+				var $li = $('<li class="list-group-item">').html('<strong>'+c.userName + '</strong> : ' + c.content );
+				var $span = $('<span class="badge">').html(c.userLike);
+				$('#commentList').append($li.append($span));
+			}
+			$('#userName').val('');
+			$('#password').val('');
+			$('#content').val('');
+			$('#commentPanel').show();
+			$('#viewPanel').show();
+			$(window).scrollTop(0);
+		}
+		
+		//리스트 생성
 		function getArticle(type){
 			if(type=='prev')page>1?page--:page;
 			else if(type=='next')page++;
@@ -137,6 +217,7 @@
 				url : "<c:url value="/taiji/article/list/"/>"+page,
 				success : function(result){
 					var resultData = JSON.parse(result);
+					var articles = resultData.articlesResponse;
 					console.log(resultData);
 					if(resultData.first){
 						$('.next').removeClass('disabled');
@@ -150,8 +231,8 @@
 						$('.next').removeClass('disabled');
 					}
 					$('#articleBody').html('');
-					for(var i = 0 ; i < resultData.content.length ; i ++){
-						var data = resultData.content[i];
+					for(var i = 0 ; i < articles.length ; i ++){
+						var data = articles[i];
 						var $seqTd = $("<td>",{text:data.seq});
 						var $titleTd = $("<td>",{text:data.title});
 						var $userTd = $("<td>",{text:data.userName});
@@ -160,7 +241,7 @@
 						var $tr = $("<tr>",{
 											id:data.seq,
 											click:function(){
-												$(this).addClass('active');
+												$('#articleSeq').val($(this).attr('id'));
 												getView($(this).attr('id'));
 											}
 								}).append($seqTd).append($titleTd).append($userTd).append($regDateTd).append($userLikeTd);

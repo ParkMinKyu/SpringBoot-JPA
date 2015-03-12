@@ -1,4 +1,4 @@
-package com.min.web.domain.test;
+package com.min.web.domain.question;
 
 import java.util.List;
 
@@ -18,8 +18,10 @@ public class Type{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long seq;
+	
 	@Column(name="name", nullable=false)
 	private String name;
+	
 	@OneToMany(mappedBy="type")
 	private List<Answer> answers;
 	

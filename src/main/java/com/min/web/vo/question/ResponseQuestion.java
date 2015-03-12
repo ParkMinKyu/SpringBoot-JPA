@@ -1,4 +1,4 @@
-package com.min.web.vo.test;
+package com.min.web.vo.question;
 
 import java.util.List;
 
@@ -14,4 +14,5 @@ public class ResponseQuestion {
 		this.question = question;
 		this.answers = answers;
 	}
+	
 }

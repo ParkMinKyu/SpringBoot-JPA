@@ -1,4 +1,4 @@
-package com.min.web.domain.test;
+package com.min.web.domain.question;
 
 
 import javax.persistence.Column;
@@ -19,11 +19,14 @@ public class Question{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long seq;
+	
 	@Column(name="title", nullable=false)
 	private String title;
+	
 	@Column(name="score", nullable=false)
 	private long score;
-	@ManyToOne(fetch = FetchType.EAGER)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="answer_seq")
 	private Answer answer;
 	

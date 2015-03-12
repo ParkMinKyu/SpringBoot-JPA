@@ -1,10 +1,10 @@
-package com.min.web.repository.test;
+package com.min.web.repository.question;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.min.web.domain.test.Answer;
+import com.min.web.domain.question.Answer;
 
 public interface AnswerRepository extends CrudRepository<Answer, Long>{
 	List<Answer> findByTypeSeq(Long typeSeq);

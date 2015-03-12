@@ -12,6 +12,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 
+import com.min.web.config.NamingConfig;
+
 @SpringBootApplication
 @EnableCaching
 public class Application extends SpringBootServletInitializer {
@@ -34,6 +36,6 @@ public class Application extends SpringBootServletInitializer {
 	
 	@Bean
 	public CacheManager cacheManager(){
-		return new ConcurrentMapCacheManager("articles","article");
+		return new ConcurrentMapCacheManager(NamingConfig.QUESTION_CACHE_NAME);
 	}
 }

@@ -17,8 +17,8 @@ public class WebController {
 	    return "article";
 	}
 
-	@RequestMapping("test")
-	public String test(){
-	    return "test";
+	@RequestMapping("question")
+	public String question(){
+	    return "question";
 	}
 }

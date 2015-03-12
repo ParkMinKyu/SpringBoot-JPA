@@ -1,4 +1,4 @@
-package com.min.web.domain.test;
+package com.min.web.domain.question;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class Answer{
 	@Column(name="answer_group", nullable=false)
 	private long answerGroup;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="type_seq")
 	private Type type;
 	

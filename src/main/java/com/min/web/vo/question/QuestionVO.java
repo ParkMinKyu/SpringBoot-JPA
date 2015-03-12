@@ -1,4 +1,4 @@
-package com.min.web.vo.test;
+package com.min.web.vo.question;
 
 import lombok.Data;
 
