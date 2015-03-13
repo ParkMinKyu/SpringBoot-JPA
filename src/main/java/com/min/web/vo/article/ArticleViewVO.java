@@ -9,9 +9,9 @@ public class ArticleViewVO {
 	@Getter
 	private ArticleVO.ViewResponse articleResponse;
 	@Getter
-	private List<CommentVO.Response> commentsResponse;
+	private List<CommentVO.ViewResponse> commentsResponse;
 	
-	public ArticleViewVO(ArticleVO.ViewResponse articleResponse, List<CommentVO.Response> commentsResponse){
+	public ArticleViewVO(ArticleVO.ViewResponse articleResponse, List<CommentVO.ViewResponse> commentsResponse){
 		this.articleResponse = articleResponse;
 		this.commentsResponse = commentsResponse;
 	}

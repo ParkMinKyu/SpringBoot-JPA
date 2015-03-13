@@ -43,7 +43,7 @@ public class Article {
 	@Temporal(TemporalType.DATE)
 	private Date regDate = new Date();
 	
-	@OneToMany(mappedBy="article",fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy="article",fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JsonBackReference
 	private List<Comment> comments;
 

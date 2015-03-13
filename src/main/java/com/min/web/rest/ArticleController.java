@@ -57,6 +57,15 @@ public class ArticleController {
 		return new ResponseEntity<>( new ArticleListVO(articlesResponse, articles.isFirst(), articles.isLast()), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "view/userLike/{seq}", method = RequestMethod.PUT)
+	@Transactional
+	public ResponseEntity<?> userLike(@PathVariable("seq")long seq){
+		Article article = articleRepository.getOne(seq);
+		article.setUserLike(article.getUserLike()+1);
+		articleRepository.save(article);
+		return new ResponseEntity<>( modelMapper.map(article, ArticleVO.ViewResponse.class), HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "view/{seq}", method = RequestMethod.GET)
 	public ResponseEntity<?> view(@PathVariable("seq")long seq){
 		return new ResponseEntity<>(getArticleView(seq), HttpStatus.OK);
@@ -70,15 +79,15 @@ public class ArticleController {
 		Comment comment = modelMapper.map(commentVO, Comment.class);
 		comment.setArticle(article);
 		commentRepository.save(comment);
-		return new ResponseEntity<> ( modelMapper.map(commentVO, CommentVO.Response.class), HttpStatus.CREATED);
+		return new ResponseEntity<> ( modelMapper.map(commentVO, CommentVO.ViewResponse.class), HttpStatus.CREATED);
 	}
 
 	@Transactional(readOnly = true)
 	private ArticleViewVO getArticleView(long seq){
 		Article article = articleRepository.findOne(seq);
 		ArticleVO.ViewResponse articleResponse = modelMapper.map(article, ArticleVO.ViewResponse.class);
-		Type commentListType =  new TypeToken<List<CommentVO.Response>>(){}.getType();
-		List<CommentVO.Response> commentsResponse = modelMapper.map(article.getComments(), commentListType);
+		Type commentListType =  new TypeToken<List<CommentVO.ViewResponse>>(){}.getType();
+		List<CommentVO.ViewResponse> commentsResponse = modelMapper.map(article.getComments(), commentListType);
 		return new ArticleViewVO(articleResponse, commentsResponse);
 	}
 }

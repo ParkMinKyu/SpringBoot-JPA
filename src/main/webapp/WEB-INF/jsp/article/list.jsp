@@ -37,7 +37,7 @@
 			<div class="collapse navbar-collapse"
 				id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="<c:url value="/taiji/view/article"/>">자유 게시판</a></li>
+					<li class="active"><a href="<c:url value="/taiji/view/article/list"/>">자유 게시판</a></li>
 					<li><a href="<c:url value="/taiji/view/question"/>">서빠력 테스트</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
@@ -66,8 +66,19 @@
 	<div class="jumbotron">
 	  <div class="container">
 	  <div class="panel panel-primary" id="viewPanel" style="display: none;">
-		  <div class="panel-heading" id="viewTitle"></div>	
-		  <div class="panel-body" id="viewContent"></div>
+		  <div class="panel-heading">글 보기</div>	
+		  <div class="panel-body">
+		  	<div class="page-header">
+			  <h2 id="viewTitle"></h2>
+			</div>
+		  	<div id="viewContent"></div>
+		  	
+		  	<div class="btn-group pull-right">
+		  		<button type="button" id="userLike" class="btn btn-default">추천 <span class="badge" id="userLikeCnt">0</span> <span class="glyphicon glyphicon-thumbs-up"></span></button>
+			  <button type="button" class="btn btn-default">글 수정 <span class="glyphicon glyphicon-pencil"></span></button>
+			  <button type="button" class="btn btn-default">글 삭제 <span class="glyphicon glyphicon-trash"></span></button>
+			</div>
+		  </div>
 	</div>
 	  <div class="panel panel-primary" id="commentPanel" style="display: none;">
 		  <div class="panel-heading">댓글(<span id="commentCount"></span>)</div>	
@@ -100,6 +111,21 @@
 	  <div class="panel panel-primary">
 		  <div class="panel-heading">S.T.J 자유 게시판</div>	
 		  <div class="panel-body">
+		  	<!-- Split button -->
+			<div class="btn-group pull-right">
+			  <button type="button" class="btn btn-default" id="articleWriteBtn">글 쓰기 <span class="glyphicon glyphicon-pencil"></span></button>
+			  <button type="button" class="btn btn-default">정렬기준 <span class="glyphicon glyphicon-sort-by-attributes-alt"></span></button>
+			  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			    <span class="caret"></span>
+			    <span class="sr-only">Toggle Dropdown</span>
+			  </button>
+			  <ul class="dropdown-menu" role="menu">
+			    <li><a href="#">추천 순 <span class="glyphicon glyphicon-thumbs-up"></span></a></li>
+			    <li><a href="#">날짜 순 <span class="glyphicon glyphicon-calendar"></span></a></li>
+			    <li class="divider"></li>
+			    <li><a href="#">초기화 <span class="glyphicon glyphicon-retweet"></span></a></li>
+			  </ul>
+			</div>
 		  	<table class="table table-striped">
 				<thead>
 					<tr>
@@ -141,11 +167,60 @@
 			}
 		});
 		
+		function setCookie(cname, cvalue, exdays) {
+		    var d = new Date();
+		    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+		    var expires = "expires="+d.toUTCString();
+		    document.cookie = cname + "=" + cvalue + "; " + expires;
+		}
+		
+		function getCookie(cname) {
+		    var name = cname + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i=0; i<ca.length; i++) {
+		        var c = ca[i];
+		        while (c.charAt(0)==' ') c = c.substring(1);
+		        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+		    }
+		    return "";
+		}
+		
+		$('#articleWriteBtn').on("click",function(){
+			location.href = '${pageContext.request.contextPath}/taiji/view/article/write';
+		});
+		
+		$('#userLike').on("click",function(){
+			var cookies = getCookie('userLikes').split("#");
+			var isCookies = false;
+			for(var i = 0 ; i < cookies.length ; i ++){
+				if(cookies[i] == $('#articleSeq').val()){
+					alert("이미 추천 하였습니다.");
+					isCookies = true;
+					break;
+				}
+			}
+			if(!isCookies){
+				var cookieValue = cookies + '#'+$('#articleSeq').val();  
+				setCookie('userLikes', cookieValue);			
+				$.ajax({
+					url : '${pageContext.request.contextPath}/taiji/article/view/userLike/'+$('#articleSeq').val(),
+					type:'PUT',
+					success : function(result){
+						var resultData = JSON.parse(result);
+						$('#userLikeCnt').text(resultData.userLike);
+					},
+					error : function(result){
+						console.log(result);
+					}
+				});
+			}
+		});
+		
 		$('#saveCommentBtn').on("click",function(){
 			$('#commentAlert').html('');
 			var comment = {articleSeq : $('#articleSeq').val(), userName: $('#userName').val(), password: $('#password').val(), content: $('#content').val()}; 
 			$.ajax({
-				url : "<c:url value="/taiji/article/comment/save"/>",
+				url : "${pageContext.request.contextPath}/taiji/article/comment/save",
 				data: JSON.stringify(comment),
 				dataType : "json",
 				contentType: "application/json; charset=utf-8",
@@ -171,7 +246,7 @@
 		
 		function getView(seq){
 			$.ajax({
-				url : "<c:url value="/taiji/article/view/"/>"+seq,
+				url : "${pageContext.request.contextPath}/taiji/article/view/"+seq,
 				success : function(result){
 					createViewAndComment(result);		
 				},
@@ -180,7 +255,7 @@
 				}
 			});
 		}
-		
+
 		//뷰 생성
 		function createViewAndComment(result){
 			var resultData = JSON.parse(result);
@@ -188,8 +263,9 @@
 			var comments = resultData.commentsResponse;
 			console.log(resultData);
 			
-			$('#viewTitle').text(article.title);
+			$('#viewTitle').text(article.title).append('<small class="pull-right">' + article.userName +' : ' + article.regDate + ' </small>');
 			$('#viewContent').html(article.content);
+			$('#userLikeCnt').html(article.userLike);
 			$('#commentCount').text(comments.length);
 			
 			
@@ -197,8 +273,9 @@
 			for(var i = 0 ; i < comments.length ; i ++){
 				var c = comments[i];
 				var $li = $('<li class="list-group-item">').html('<strong>'+c.userName + '</strong> : ' + c.content );
-				var $span = $('<span class="badge">').html(c.userLike);
-				$('#commentList').append($li.append($span));
+				var $span = $('<span class="badge">').html(c.regDate);
+				var $button = $('<button type="button" class="btn btn-default btn-xs pull-right">삭제</button>');
+				$('#commentList').append($li.append($button).append($span));
 			}
 			$('#userName').val('');
 			$('#password').val('');
@@ -214,7 +291,7 @@
 			else if(type=='next')page++;
 			console.log(page);
 			$.ajax({
-				url : "<c:url value="/taiji/article/list/"/>"+page,
+				url : "${pageContext.request.contextPath}/taiji/article/list/"+page,
 				success : function(result){
 					var resultData = JSON.parse(result);
 					var articles = resultData.articlesResponse;
@@ -234,7 +311,7 @@
 					for(var i = 0 ; i < articles.length ; i ++){
 						var data = articles[i];
 						var $seqTd = $("<td>",{text:data.seq});
-						var $titleTd = $("<td>",{text:data.title});
+						var $titleTd = $("<td>",{html:data.title + " <span style='color:red'>("+data.comments.length+")<span>"});
 						var $userTd = $("<td>",{text:data.userName});
 						var $userLikeTd = $("<td>",{text:data.userLike});
 						var $regDateTd = $("<td>",{text:data.regDate});

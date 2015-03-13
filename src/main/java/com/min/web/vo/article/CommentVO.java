@@ -27,7 +27,7 @@ public class CommentVO {
 	private Date regDate = new Date();
 	
 	@Data
-	public static class Response{
+	public static class ViewResponse{
 		private long seq;
 		
 		@Size(min=6,max=2000)
@@ -41,5 +41,10 @@ public class CommentVO {
 		private long articleSeq;
 		
 		private Date regDate = new Date();
+	}
+
+	@Data
+	public static class ListResponse{
+		private long seq;
 	}
 }

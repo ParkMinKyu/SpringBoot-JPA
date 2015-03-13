@@ -1,6 +1,7 @@
 package com.min.web.vo.article;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Size;
 
@@ -22,7 +23,7 @@ public class ArticleVO {
 	
 	private String userName;
 	
-	private long like;
+	private long userLike;
 	
 	private Date regDate = new Date();
 	
@@ -38,7 +39,7 @@ public class ArticleVO {
 
 		private String userName;
 		
-		private long like;
+		private long userLike;
 		
 		private Date regDate = new Date();
 	}
@@ -52,8 +53,10 @@ public class ArticleVO {
 		
 		private String userName;
 		
-		private long like;
+		private long userLike;
 		
 		private Date regDate = new Date();
+		
+		private List<CommentVO.ListResponse> comments;
 	}
 }
