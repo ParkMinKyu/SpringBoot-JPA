@@ -57,6 +57,32 @@ public class ArticleController {
 		return new ResponseEntity<>( new ArticleListVO(articlesResponse, articles.isFirst(), articles.isLast()), HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "delete", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public ResponseEntity<?> delete(@RequestBody @Valid ArticleVO articleVO,BindingResult result){
+		if(result.hasErrors()) return new ResponseEntity<> (result.getAllErrors(), HttpStatus.BAD_REQUEST);
+		
+		Article article = articleRepository.findOne(articleVO.getSeq());
+		if(article == null)
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+		if(article.getPassword().equals(articleVO.getPassword())){
+			articleRepository.delete(article);
+			if(articleRepository.findOne(articleVO.getSeq()) == null)
+				return new ResponseEntity<>( modelMapper.map(article, ArticleVO.ListResponse.class),HttpStatus.OK );
+			else return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+		}else{
+			return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+		}
+	}
+
+	@RequestMapping(value = "save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public ResponseEntity<?> save(@RequestBody @Valid ArticleVO articleVO,BindingResult result){
+		if(result.hasErrors()) return new ResponseEntity<> (result.getAllErrors(), HttpStatus.BAD_REQUEST);
+		articleRepository.save(modelMapper.map(articleVO, Article.class));
+		return new ResponseEntity<>( modelMapper.map(articleVO, ArticleVO.ViewResponse.class),HttpStatus.OK ); 
+	}
+
 	@RequestMapping(value = "view/userLike/{seq}", method = RequestMethod.PUT)
 	@Transactional
 	public ResponseEntity<?> userLike(@PathVariable("seq")long seq){

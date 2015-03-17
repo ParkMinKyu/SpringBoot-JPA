@@ -76,10 +76,36 @@
 		  	<div class="btn-group pull-right">
 		  		<button type="button" id="userLike" class="btn btn-default">추천 <span class="badge" id="userLikeCnt">0</span> <span class="glyphicon glyphicon-thumbs-up"></span></button>
 			  <button type="button" class="btn btn-default">글 수정 <span class="glyphicon glyphicon-pencil"></span></button>
-			  <button type="button" class="btn btn-default">글 삭제 <span class="glyphicon glyphicon-trash"></span></button>
+			  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" data-whatever="@비밀번호 입력">글 삭제 <span class="glyphicon glyphicon-trash"></span></button>
 			</div>
-		  </div>
+		</div>
 	</div>
+	
+	<!-- 삭제 비밀번호  -->
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">글 삭제</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="message-text" class="control-label">비밀번호:</label>
+            <input class="form-control" type="password" id="articlePassword"/>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="articleDeleteBtn">Send password</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
 	  <div class="panel panel-primary" id="commentPanel" style="display: none;">
 		  <div class="panel-heading">댓글(<span id="commentCount"></span>)</div>	
 		  <div class="panel-body">
@@ -151,6 +177,7 @@
 	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<!-- custom jquery -->
@@ -185,6 +212,26 @@
 		    return "";
 		}
 		
+		$('#articleDeleteBtn').on("click",function(){
+			var password = $('#articlePassword').val();
+			$.ajax({
+				url:'${pageContext.request.contextPath}/taiji/article/delete/',
+				type:"DELETE",
+				data : JSON.stringify({seq : $('#articleSeq').val(),password : password}),
+				dataType : "json",
+				contentType: "application/json; charset=utf-8",
+				success:function(result){
+					console.log(result);
+					alert("삭제 완료.");
+					location.reload();
+				},
+				error:function(result){
+					alert("삭제 실패. 비밀번호가 다르거나 일시적인 서버 오류 입니다.");
+					console.log(result);
+				}
+			});
+		});
+		
 		$('#articleWriteBtn').on("click",function(){
 			location.href = '${pageContext.request.contextPath}/taiji/view/article/write';
 		});
@@ -200,7 +247,7 @@
 				}
 			}
 			if(!isCookies){
-				var cookieValue = cookies + '#'+$('#articleSeq').val();  
+				var cookieValue = getCookie('userLikes') + '#'+$('#articleSeq').val();  
 				setCookie('userLikes', cookieValue);			
 				$.ajax({
 					url : '${pageContext.request.contextPath}/taiji/article/view/userLike/'+$('#articleSeq').val(),
@@ -264,7 +311,7 @@
 			console.log(resultData);
 			
 			$('#viewTitle').text(article.title).append('<small class="pull-right">' + article.userName +' : ' + article.regDate + ' </small>');
-			$('#viewContent').html(article.content);
+			$('#viewContent').html(article.content.replace(new RegExp('\n','g'),'<br>'));
 			$('#userLikeCnt').html(article.userLike);
 			$('#commentCount').text(comments.length);
 			
@@ -283,6 +330,7 @@
 			$('#commentPanel').show();
 			$('#viewPanel').show();
 			$(window).scrollTop(0);
+
 		}
 		
 		//리스트 생성

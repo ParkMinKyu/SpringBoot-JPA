@@ -21,6 +21,7 @@ public class ArticleVO {
 	@Size(min=4,max=20)
 	private String password;
 	
+	@Size(min=2,max=20)
 	private String userName;
 	
 	private long userLike;

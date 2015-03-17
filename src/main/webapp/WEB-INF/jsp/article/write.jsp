@@ -68,73 +68,25 @@
 		  <div class="panel-heading">글 쓰기</div>	
 		  <div class="panel-body">
 			 <div id="writeAlert"></div>		  
-			 <form onsubmit="return false;">
-			 <input type="hidden" id="articleSeq">
+			 <form name="writeForm" id="writeForm" onsubmit="return false;">
+			 <input type="hidden" name="articleSeq" id="articleSeq">
 			  <div class="form-group">
 			    <label for="title">Title</label>
-			    <input type="text" class="form-control" id="title" placeholder="title">
+			    <input type="text" class="form-control" name="title" id="title" placeholder="title">
 			  </div>
 			  <div class="form-group">
-			  <!-- 툴바 -->
-			    <div class="btn-toolbar" data-role="editor-toolbar" data-target="#content">
-      <div class="btn-group">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font"><i class="glyphicon glyphicon-font"></i><b class="caret"></b></a>
-          <ul class="dropdown-menu">
-          <li><a data-edit="fontName Serif" style="font-family:'Serif'">Serif</a></li><li><a data-edit="fontName Sans" style="font-family:'Sans'">Sans</a></li><li><a data-edit="fontName Arial" style="font-family:'Arial'">Arial</a></li><li><a data-edit="fontName Arial Black" style="font-family:'Arial Black'">Arial Black</a></li><li><a data-edit="fontName Courier" style="font-family:'Courier'">Courier</a></li><li><a data-edit="fontName Courier New" style="font-family:'Courier New'">Courier New</a></li><li><a data-edit="fontName Comic Sans MS" style="font-family:'Comic Sans MS'">Comic Sans MS</a></li><li><a data-edit="fontName Helvetica" style="font-family:'Helvetica'">Helvetica</a></li><li><a data-edit="fontName Impact" style="font-family:'Impact'">Impact</a></li><li><a data-edit="fontName Lucida Grande" style="font-family:'Lucida Grande'">Lucida Grande</a></li><li><a data-edit="fontName Lucida Sans" style="font-family:'Lucida Sans'">Lucida Sans</a></li><li><a data-edit="fontName Tahoma" style="font-family:'Tahoma'">Tahoma</a></li><li><a data-edit="fontName Times" style="font-family:'Times'">Times</a></li><li><a data-edit="fontName Times New Roman" style="font-family:'Times New Roman'">Times New Roman</a></li><li><a data-edit="fontName Verdana" style="font-family:'Verdana'">Verdana</a></li></ul>
-        </div>
-      <div class="btn-group">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Font Size"><i class="glyphicon glyphicon-text-height"></i>&nbsp;<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-          <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
-          <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-          <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
-          </ul>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-default" data-edit="bold" title="" data-original-title="Bold (Ctrl/Cmd+B)"><i class="glyphicon glyphicon-bold"></i></a>
-        <a class="btn btn-default" data-edit="italic" title="" data-original-title="Italic (Ctrl/Cmd+I)"><i class="glyphicon glyphicon-italic"></i></a>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-default" data-edit="outdent" title="" data-original-title="Reduce indent (Shift+Tab)"><i class="glyphicon glyphicon-indent-left"></i></a>
-        <a class="btn btn-default" data-edit="indent" title="" data-original-title="Indent (Tab)"><i class="glyphicon glyphicon-indent-right"></i></a>
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-default" data-edit="justifyleft" title="" data-original-title="Align Left (Ctrl/Cmd+L)"><i class="glyphicon glyphicon-align-left"></i></a>
-        <a class="btn btn-default" data-edit="justifycenter" title="" data-original-title="Center (Ctrl/Cmd+E)"><i class="glyphicon glyphicon-align-center"></i></a>
-        <a class="btn btn-default" data-edit="justifyright" title="" data-original-title="Align Right (Ctrl/Cmd+R)"><i class="glyphicon glyphicon-align-right"></i></a>
-        <a class="btn btn-default" data-edit="justifyfull" title="" data-original-title="Justify (Ctrl/Cmd+J)"><i class="glyphicon glyphicon-align-justify"></i></a>
-      </div>
-      <div class="btn-group">
-		  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="" data-original-title="Hyperlink"><i class="glyphicon glyphicon-paperclip"></i></a>
-		    <div class="dropdown-menu input-append">
-			    <input class="span2" placeholder="URL" type="text" data-edit="createLink">
-			    <button class="btn" type="button">Add</button>
-        </div>
-        <a class="btn btn-default" data-edit="unlink" title="" data-original-title="Remove Hyperlink"><i class="glyphicon glyphicon-scissors"></i></a>
-
-      </div>
-      
-      <div class="btn-group">
-        <a class="btn btn-default" title="" id="pictureBtn" data-original-title="Insert picture (or just drag &amp; drop)"><i class="glyphicon glyphicon-film"></i></a>
-        <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" style="opacity: 0; position: absolute; top: 0px; left: 0px; width: 37px; height: 30px;">
-      </div>
-      <div class="btn-group">
-        <a class="btn btn-default" data-edit="undo" title="" data-original-title="Undo (Ctrl/Cmd+Z)"><i class="glyphicon glyphicon-backward"></i></a>
-        <a class="btn btn-default" data-edit="redo" title="" data-original-title="Redo (Ctrl/Cmd+Y)"><i class="glyphicon glyphicon-forward"></i></a>
-      </div>
-      <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="" style="display: none;">
-    </div>
-    <!-- 툴바 -->
-			    <div class="form-control" contenteditable="true" id="content" style="overflow: scroll; max-height: 300px;height: 300px;"></div>
+			  	<label for="content">Content</label>
+			    <textarea class="form-control" rows="3" name="content" id="content"></textarea>
 			  </div>
 			  <div class="form-group">
 			    <label for="userName">User Name</label>
-			    <input type="text" class="form-control" id="userName" placeholder="userName">
+			    <input type="text" class="form-control" name="userName" id="userName" placeholder="userName">
 			  </div>
 			  <div class="form-group">
 			    <label for="password">Password</label>
-			    <input type="password" class="form-control" id="password" placeholder="password">
+			    <input type="password" class="form-control" name="password" id="password" placeholder="password">
 			  </div>
+			  <button type="submit" id="backBtn" class="btn btn-default btn-lg pull-left"><span class="glyphicon glyphicon-arrow-left"></span> 뒤로</button>
 			  <button type="submit" id="saveWriteBtn" class="btn btn-default btn-lg pull-right">등록 <span class="glyphicon glyphicon-save"></span></button>
 			</form>
 			 
@@ -151,44 +103,36 @@
 	<!-- custom jquery -->
 	<script type="text/javascript">
 	  $(function(){
-	    function initToolbarBootstrapBindings() {
-	      var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier', 
-	            'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-	            'Times New Roman', 'Verdana'],
-	            fontTarget = $('[title=Font]').siblings('.dropdown-menu');
-	      $.each(fonts, function (idx, fontName) {
-	          fontTarget.append($('<li><a data-edit="fontName ' + fontName +'" style="font-family:\''+ fontName +'\'">'+fontName + '</a></li>'));
-	      });
-	      $('a[title]').tooltip({container:'body'});
-	    	$('.dropdown-menu input').click(function() {return false;})
-			    .change(function () {$(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle');})
-	        .keydown('esc', function () {this.value='';$(this).change();});
-
-	      $('[data-role=magic-overlay]').each(function () { 
-	        var overlay = $(this), target = $(overlay.data('target')); 
-	        overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
-	      });
-	      if ("onwebkitspeechchange"  in document.createElement("input")) {
-	        var editorOffset = $('#content').offset();
-	        $('#voiceBtn').css('position','absolute').offset({top: editorOffset.top, left: editorOffset.left+$('#content').innerWidth()-35});
-	      } else {
-	        $('#voiceBtn').hide();
-	      }
-		};
-		function showErrorAlert (reason, detail) {
-			var msg='';
-			if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
-			else {
-				console.log("error uploading file", reason, detail);
-			}
-			$('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+ 
-			 '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
-		};
-	    initToolbarBootstrapBindings();  
-		$('#content').wysiwyg({ fileUploadError: showErrorAlert} );
-	    window.prettyPrint && prettyPrint();
+		  $('#saveWriteBtn').on("click",function(){
+			  $('#writeAlert').html('');
+			  $.ajax({
+				  url:'${pageContext.request.contextPath}/taiji/article/save',
+				  type:"POST",
+				  data:JSON.stringify({seq:$('#articleSeq').val(),title:$('#title').val(),content:$('#content').val(),userName:$('#userName').val(),password:$('#password').val()}),
+				  dataType:"json",
+				  contentType: "application/json; charset=utf-8",
+				  success:function(result){
+					  console.log(result);
+					  location.href="<c:url value="/taiji/view/article/list"/>";
+				  },
+				  error:function(result){
+					  console.log(result);
+					  for(var data in result.responseJSON){
+						var html = '<div class="alert alert-warning alert-dismissible" role="alert" id="writeAlert">';
+						html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="false">&times;</span></button>';
+						html += '<strong>Warning!</strong> <a href="#'+result.responseJSON[data].field+'" class="alert-link">' + result.responseJSON[data].field + '</a>의 '+ result.responseJSON[data].defaultMessage + '</div>';
+						$('#writeAlert').append(html);
+						location.href="#writeAlert";
+					}
+				  }
+			  });
+		  });
+		  
+		  
+	    $('#backBtn').on("click",function(){
+	    	history.back();	
+	    });
 	  });
-
 	</script>
 </body>
 </html>
