@@ -63,8 +63,6 @@
 		<!-- /.container-fluid -->
 	</nav>
 	
-	<div class="jumbotron">
-	  <div class="container">
 	  <div class="panel panel-primary" id="viewPanel" style="display: none;">
 		  <div class="panel-heading">글 보기</div>	
 		  <div class="panel-body">
@@ -173,11 +171,9 @@
 			</nav>
 		 </div>
 		</div>
-	  </div>
-	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
+	<script src="/resources/common.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<!-- custom jquery -->
@@ -215,7 +211,7 @@
 		$('#articleDeleteBtn').on("click",function(){
 			var password = $('#articlePassword').val();
 			$.ajax({
-				url:'${pageContext.request.contextPath}/taiji/article/delete/',
+				url:'/taiji/article/delete/',
 				type:"DELETE",
 				data : JSON.stringify({seq : $('#articleSeq').val(),password : password}),
 				dataType : "json",
@@ -233,7 +229,7 @@
 		});
 		
 		$('#articleWriteBtn').on("click",function(){
-			location.href = '${pageContext.request.contextPath}/taiji/view/article/write';
+			location.href = '/taiji/view/article/write';
 		});
 		
 		$('#userLike').on("click",function(){
@@ -250,7 +246,7 @@
 				var cookieValue = getCookie('userLikes') + '#'+$('#articleSeq').val();  
 				setCookie('userLikes', cookieValue);			
 				$.ajax({
-					url : '${pageContext.request.contextPath}/taiji/article/view/userLike/'+$('#articleSeq').val(),
+					url : '/taiji/article/view/userLike/'+$('#articleSeq').val(),
 					type:'PUT',
 					success : function(result){
 						var resultData = JSON.parse(result);
@@ -267,7 +263,7 @@
 			$('#commentAlert').html('');
 			var comment = {articleSeq : $('#articleSeq').val(), userName: $('#userName').val(), password: $('#password').val(), content: $('#content').val()}; 
 			$.ajax({
-				url : "${pageContext.request.contextPath}/taiji/article/comment/save",
+				url : "/taiji/article/comment/save",
 				data: JSON.stringify(comment),
 				dataType : "json",
 				contentType: "application/json; charset=utf-8",
@@ -293,7 +289,7 @@
 		
 		function getView(seq){
 			$.ajax({
-				url : "${pageContext.request.contextPath}/taiji/article/view/"+seq,
+				url : "/taiji/article/view/"+seq,
 				success : function(result){
 					createViewAndComment(result);		
 				},
@@ -339,7 +335,7 @@
 			else if(type=='next')page++;
 			console.log(page);
 			$.ajax({
-				url : "${pageContext.request.contextPath}/taiji/article/list/"+page,
+				url : "/taiji/article/list/"+page,
 				success : function(result){
 					var resultData = JSON.parse(result);
 					var articles = resultData.articlesResponse;

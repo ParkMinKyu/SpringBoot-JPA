@@ -55,8 +55,6 @@
 		<!-- /.container-fluid -->
 	</nav>
 	
-	<div class="jumbotron">
-	  <div class="container">
 	  	<div class="panel panel-primary">
 		  <div class="panel-heading">서태지빠들의 모임</div>	
 		  <div class="panel-body">
@@ -70,14 +68,13 @@
 			  <li class="list-group-item">3. 서태지의 음악을 10곡 이상 모르시는분.</li>
 			  <li class="list-group-item">4. 의미없이 악플만 다는 분.</li>
 			  <li class="list-group-item">5. 서태지와 관련없는 게시물을 작성하는분 등등.....</li>
+			  <li class="list-group-item"><button type="button" class="btn btn-default" onclick="location.href='/taiji/view/article/list'">확인 완료</button></li>
 		  </ul>	
 		 </div>
 		</div>
-	  </div>
-	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
+	<script src="/resources/common.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<!-- custom jquery -->

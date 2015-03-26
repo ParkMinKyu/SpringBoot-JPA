@@ -63,8 +63,6 @@
 		<!-- /.container-fluid -->
 	</nav>
 	
-	<div class="jumbotron">
-	  <div class="container">
 		<div class="panel panel-primary">
 		  <div class="panel-heading">S.T.J 테스트</div>	
 		  <div class="panel-body">	  
@@ -84,8 +82,6 @@
 			</ul>
 		</nav>
 		</div>
-	  </div>
-	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/common.js"></script>

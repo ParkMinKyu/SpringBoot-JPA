@@ -61,9 +61,6 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	
-	<div class="jumbotron">
-	  <div class="container">
 	  <div class="panel panel-primary" id="writePanel">
 		  <div class="panel-heading">글 쓰기</div>	
 		  <div class="panel-body">
@@ -92,21 +89,19 @@
 			 
 		  </div>
 		</div>
-	  </div>
-	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/external/jquery.hotkeys.js"></script>
-	<script src="${pageContext.request.contextPath}/resources/bootstrap-wysiwyg.js"></script>
+	<script src="/resources/external/jquery.hotkeys.js"></script>
+	<script src="/resources/bootstrap-wysiwyg.js"></script>
 	<!-- custom jquery -->
 	<script type="text/javascript">
 	  $(function(){
 		  $('#saveWriteBtn').on("click",function(){
 			  $('#writeAlert').html('');
 			  $.ajax({
-				  url:'${pageContext.request.contextPath}/taiji/article/save',
+				  url:'/taiji/article/save',
 				  type:"POST",
 				  data:JSON.stringify({seq:$('#articleSeq').val(),title:$('#title').val(),content:$('#content').val(),userName:$('#userName').val(),password:$('#password').val()}),
 				  dataType:"json",
