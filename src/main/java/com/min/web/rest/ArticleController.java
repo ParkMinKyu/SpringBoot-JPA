@@ -107,6 +107,21 @@ public class ArticleController {
 		commentRepository.save(comment);
 		return new ResponseEntity<> ( modelMapper.map(commentVO, CommentVO.ViewResponse.class), HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value="comment/delete",method = RequestMethod.DELETE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Transactional
+	public ResponseEntity<?> commentDelete(@RequestBody @Valid CommentVO commentVO, BindingResult result){
+		if(result.hasErrors()) return new ResponseEntity<> (result.getAllErrors(), HttpStatus.BAD_REQUEST);
+		Comment comment = commentRepository.findOne(commentVO.getSeq());
+		if(comment.getPassword().equals(commentVO.getPassword())){
+		    commentRepository.delete(comment);
+		    return new ResponseEntity<> ( HttpStatus.OK );
+		}
+		else{
+		    return new ResponseEntity<> ( HttpStatus.BAD_REQUEST );
+		}
+		
+	}
 
 	@Transactional(readOnly = true)
 	private ArticleViewVO getArticleView(long seq){

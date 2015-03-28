@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -91,7 +92,7 @@
         <form>
           <div class="form-group">
             <label for="message-text" class="control-label">비밀번호:</label>
-            <input class="form-control" type="password" id="articlePassword"/>
+            <input class="form-control" type="password" maxlength="20" id="articlePassword"/>
           </div>
         </form>
       </div>
@@ -115,17 +116,17 @@
 			 
 			 <form onsubmit="return false;">
 			 <input type="hidden" id="articleSeq">
+			 <div class="form-group">
+			    <label for="content">content</label>
+			    <textarea class="form-control" id="content" rows="3"></textarea>
+			  </div>
 			  <div class="form-group">
 			    <label for="userName">User Name</label>
-			    <input type="text" class="form-control" id="userName" placeholder="userName">
+			    <input type="text" class="form-control" maxlength="20" id="userName" placeholder="userName">
 			  </div>
 			  <div class="form-group">
 			    <label for="password">Password</label>
-			    <input type="password" class="form-control" id="password" placeholder="password">
-			  </div>
-			  <div class="form-group">
-			    <label for="content">content</label>
-			    <textarea class="form-control" id="content" rows="3"></textarea>
+			    <input type="password" class="form-control" maxlength="20" id="password" placeholder="password">
 			  </div>
 			  <button type="submit" id="saveCommentBtn" class="btn btn-default btn-lg pull-right">등록 <span class="glyphicon glyphicon-save"></span></button>
 			</form>
@@ -173,7 +174,7 @@
 		</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-	<script src="/resources/common.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<!-- custom jquery -->
@@ -211,7 +212,7 @@
 		$('#articleDeleteBtn').on("click",function(){
 			var password = $('#articlePassword').val();
 			$.ajax({
-				url:'/taiji/article/delete/',
+				url:'${pageContext.request.contextPath}/taiji/article/delete/',
 				type:"DELETE",
 				data : JSON.stringify({seq : $('#articleSeq').val(),password : password}),
 				dataType : "json",
@@ -227,9 +228,32 @@
 				}
 			});
 		});
+
+		$('#commentPanel').on("click","#commentDeleteBtn",function(){
+			var password = prompt("비밀번호를 입력 하세요.");
+			var seq = $(this).attr("data-value");
+			if(password != ''){
+				$.ajax({
+					url:'${pageContext.request.contextPath}/taiji/article/comment/delete/',
+					type:"DELETE",
+					data : JSON.stringify({seq : seq,password : password}),
+					dataType : "json",
+					contentType: "application/json; charset=utf-8",
+					success:function(result){
+						console.log(result);
+						alert("삭제 완료.");
+						getView($('#articleSeq').val());
+					},
+					error:function(result){
+						alert("삭제 실패. 비밀번호가 다르거나 일시적인 서버 오류 입니다.");
+						console.log(result);
+					}
+				});
+			}
+		});
 		
 		$('#articleWriteBtn').on("click",function(){
-			location.href = '/taiji/view/article/write';
+			location.href = '${pageContext.request.contextPath}/taiji/view/article/write';
 		});
 		
 		$('#userLike').on("click",function(){
@@ -246,7 +270,7 @@
 				var cookieValue = getCookie('userLikes') + '#'+$('#articleSeq').val();  
 				setCookie('userLikes', cookieValue);			
 				$.ajax({
-					url : '/taiji/article/view/userLike/'+$('#articleSeq').val(),
+					url : '${pageContext.request.contextPath}/taiji/article/view/userLike/'+$('#articleSeq').val(),
 					type:'PUT',
 					success : function(result){
 						var resultData = JSON.parse(result);
@@ -263,7 +287,7 @@
 			$('#commentAlert').html('');
 			var comment = {articleSeq : $('#articleSeq').val(), userName: $('#userName').val(), password: $('#password').val(), content: $('#content').val()}; 
 			$.ajax({
-				url : "/taiji/article/comment/save",
+				url : "${pageContext.request.contextPath}/taiji/article/comment/save",
 				data: JSON.stringify(comment),
 				dataType : "json",
 				contentType: "application/json; charset=utf-8",
@@ -289,7 +313,7 @@
 		
 		function getView(seq){
 			$.ajax({
-				url : "/taiji/article/view/"+seq,
+				url : "${pageContext.request.contextPath}/taiji/article/view/"+seq,
 				success : function(result){
 					createViewAndComment(result);		
 				},
@@ -316,8 +340,8 @@
 			for(var i = 0 ; i < comments.length ; i ++){
 				var c = comments[i];
 				var $li = $('<li class="list-group-item">').html('<strong>'+c.userName + '</strong> : ' + c.content );
-				var $span = $('<span class="badge">').html(c.regDate);
-				var $button = $('<button type="button" class="btn btn-default btn-xs pull-right">삭제</button>');
+				var $span = $('<span class="pull-right">').html(c.regDate);
+				var $button = $('<button type="button" id="commentDeleteBtn" data-value="'+c.seq+'" class="btn btn-default btn-xs pull-right">삭제</button>');
 				$('#commentList').append($li.append($button).append($span));
 			}
 			$('#userName').val('');
@@ -335,16 +359,18 @@
 			else if(type=='next')page++;
 			console.log(page);
 			$.ajax({
-				url : "/taiji/article/list/"+page,
+				url : "${pageContext.request.contextPath}/taiji/article/list/"+page,
 				success : function(result){
 					var resultData = JSON.parse(result);
 					var articles = resultData.articlesResponse;
 					console.log(resultData);
-					if(resultData.first){
+					if(resultData.first && resultData.last){
+						$('.next').addClass('disabled');
+						$('.previous').addClass('disabled');
+					}else if(resultData.first && !resultData.last){
 						$('.next').removeClass('disabled');
 						$('.previous').addClass('disabled');
-					}
-					else if(resultData.last){
+					}else if(resultData.last){
 						$('.previous').removeClass('disabled');
 						$('.next').addClass('disabled');
 					}else{

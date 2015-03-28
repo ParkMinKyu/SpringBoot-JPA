@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -73,15 +74,15 @@
 			  </div>
 			  <div class="form-group">
 			  	<label for="content">Content</label>
-			    <textarea class="form-control" rows="3" name="content" id="content"></textarea>
+			    <textarea class="form-control" rows="6" name="content" id="content"></textarea>
 			  </div>
 			  <div class="form-group">
 			    <label for="userName">User Name</label>
-			    <input type="text" class="form-control" name="userName" id="userName" placeholder="userName">
+			    <input type="text" class="form-control" name="userName" id="userName" maxlength="20" placeholder="userName">
 			  </div>
 			  <div class="form-group">
 			    <label for="password">Password</label>
-			    <input type="password" class="form-control" name="password" id="password" placeholder="password">
+			    <input type="password" class="form-control" name="password" id="password" maxlength="20" placeholder="password">
 			  </div>
 			  <button type="submit" id="backBtn" class="btn btn-default btn-lg pull-left"><span class="glyphicon glyphicon-arrow-left"></span> 뒤로</button>
 			  <button type="submit" id="saveWriteBtn" class="btn btn-default btn-lg pull-right">등록 <span class="glyphicon glyphicon-save"></span></button>
@@ -101,7 +102,7 @@
 		  $('#saveWriteBtn').on("click",function(){
 			  $('#writeAlert').html('');
 			  $.ajax({
-				  url:'/taiji/article/save',
+				  url:'${pageContext.request.contextPath}/taiji/article/save',
 				  type:"POST",
 				  data:JSON.stringify({seq:$('#articleSeq').val(),title:$('#title').val(),content:$('#content').val(),userName:$('#userName').val(),password:$('#password').val()}),
 				  dataType:"json",
