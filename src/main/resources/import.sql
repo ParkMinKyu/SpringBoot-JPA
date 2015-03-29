@@ -82,16 +82,16 @@ insert into answer(seq,content,answer_group,type_seq) values(78,'잃어버린', 
 insert into answer(seq,content,answer_group,type_seq) values(79,'비록', 9,'1');
 insert into answer(seq,content,answer_group,type_seq) values(80,'성탄절의 기적', 9,'1');
 /*문제 입력*/
-insert into  question(seq,title,score,answer_seq) values(1,'와 아이들의 첫 데뷔곡이자 1집 타이틀 곡은?',5,1);
-insert into  question(seq,title,score,answer_seq) values(2,'와 아이들의 2집 타이틀 곡은?',5,11);
-insert into  question(seq,title,score,answer_seq) values(3,'와 아이들의 3집 타이틀 곡은?',5,17);
-insert into  question(seq,title,score,answer_seq) values(4,'와 아이들의 4집 타이틀 곡은?',5,26);
-insert into  question(seq,title,score,answer_seq) values(5,' 솔로 데뷔(5집) 첫 뮤직비디오 곡은?',5,35);
-insert into  question(seq,title,score,answer_seq) values(6,' 6집 타이틀 곡은?',5,49);
-insert into  question(seq,title,score,answer_seq) values(7,' 7집 타이틀 곡은?',5,56);
-insert into  question(seq,title,score,answer_seq) values(8,' 8집 Part 1. 타이틀 곡은?',5,64);
-insert into  question(seq,title,score,answer_seq) values(9,' 8집 Part 2. 타이틀 곡은?',5,68);
-insert into  question(seq,title,score,answer_seq) values(10,' 9집 타이틀 곡은?',5,74);
+insert into  question(seq,title,score,answer_seq) values(1,'서태지와 아이들의 첫 데뷔곡이자 1집 타이틀 곡은?',5,1);
+insert into  question(seq,title,score,answer_seq) values(2,'서태지와 아이들의 2집 타이틀 곡은?',5,11);
+insert into  question(seq,title,score,answer_seq) values(3,'서태지와 아이들의 3집 타이틀 곡은?',5,17);
+insert into  question(seq,title,score,answer_seq) values(4,'서태지와 아이들의 4집 타이틀 곡은?',5,26);
+insert into  question(seq,title,score,answer_seq) values(5,'서태지 솔로 데뷔(5집) 첫 뮤직비디오 곡은?',5,35);
+insert into  question(seq,title,score,answer_seq) values(6,'서태지 6집 타이틀 곡은?',5,49);
+insert into  question(seq,title,score,answer_seq) values(7,'서태지 7집 타이틀 곡은?',5,56);
+insert into  question(seq,title,score,answer_seq) values(8,'서태지 8집 Part 1. 타이틀 곡은?',5,64);
+insert into  question(seq,title,score,answer_seq) values(9,'서태지 8집 Part 2. 타이틀 곡은?',5,68);
+insert into  question(seq,title,score,answer_seq) values(10,'서태지 9집 타이틀 곡은?',5,74);
 
 
 /*샘플 게시글 입력*/

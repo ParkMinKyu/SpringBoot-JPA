@@ -42,12 +42,12 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">태지보이스</a></li>
-							<li><a href="#">방황기</a></li>
-							<li><a href="#">6집</a></li>
-							<li><a href="#">7집</a></li>
-							<li><a href="#">8집</a></li>
-							<li><a href="#">9집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/boys"/>">태지보이스</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo5"/>">방황기</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo6"/>">6집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo7"/>">7집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo8"/>">8집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo9"/>">9집</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -62,12 +62,8 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	
-		<div class="panel panel-primary">
-		  <div class="panel-heading">S.T.J 테스트</div>	
-		  <div class="panel-body">	  
+	<div class="container">
 	    	<h2 id="question"></h2>
-	    </div>
 	    <div class="list-group">
 		  <a href="#" id="answer1" class="list-group-item"></a>
 		  <a href="#" id="answer2" class="list-group-item"></a>
@@ -81,7 +77,7 @@
 				<li class="next"><a href="#" id="next">다음 <span aria-hidden="true">&rarr;</span></a></li>
 			</ul>
 		</nav>
-		</div>
+	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/common.js"></script>

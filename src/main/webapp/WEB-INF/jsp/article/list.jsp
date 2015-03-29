@@ -43,12 +43,12 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">태지보이스</a></li>
-							<li><a href="#">방황기</a></li>
-							<li><a href="#">6집</a></li>
-							<li><a href="#">7집</a></li>
-							<li><a href="#">8집</a></li>
-							<li><a href="#">9집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/boys"/>">태지보이스</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo5"/>">방황기</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo6"/>">6집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo7"/>">7집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo8"/>">8집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo9"/>">9집</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -63,7 +63,7 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	
+	<div class="container">
 	  <div class="panel panel-primary" id="viewPanel" style="display: none;">
 		  <div class="panel-heading">글 보기</div>	
 		  <div class="panel-body">
@@ -74,13 +74,12 @@
 		  	
 		  	<div class="btn-group pull-right">
 		  		<button type="button" id="userLike" class="btn btn-default">추천 <span class="badge" id="userLikeCnt">0</span> <span class="glyphicon glyphicon-thumbs-up"></span></button>
-			  <button type="button" class="btn btn-default">글 수정 <span class="glyphicon glyphicon-pencil"></span></button>
 			  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModal" data-whatever="@비밀번호 입력">글 삭제 <span class="glyphicon glyphicon-trash"></span></button>
 			</div>
 		</div>
 	</div>
 	
-	<!-- 삭제 비밀번호  -->
+	<!-- 게시글 삭제 비밀번호  -->
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -99,6 +98,31 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary" id="articleDeleteBtn">Send password</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	<!-- 댓글 삭제 비밀번호  -->
+	<div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="commentModalLabel">댓글 삭제</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="message-text" class="control-label">비밀번호:</label>
+            <input class="form-control" type="password" maxlength="20" id="commentPassword"/>
+            <input class="form-control" type="hidden" id="commentSeq"/>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="commentDeleteBtn">Send password</button>
       </div>
     </div>
   </div>
@@ -133,9 +157,6 @@
 			 
 		  </div>
 	</div>
-	  <div class="panel panel-primary">
-		  <div class="panel-heading">S.T.J 자유 게시판</div>	
-		  <div class="panel-body">
 		  	<!-- Split button -->
 			<div class="btn-group pull-right">
 			  <button type="button" class="btn btn-default" id="articleWriteBtn">글 쓰기 <span class="glyphicon glyphicon-pencil"></span></button>
@@ -157,8 +178,8 @@
 						<th>#</th>
 						<th>제목</th>
 						<th>글쓴이</th>
-						<th>작성 시간</th>
-						<th>추천수</th>
+						<th>날짜</th>
+						<th>추천</th>
 					</tr>
 				</thead>
 				<tbody id="articleBody" style="cursor: pointer;">
@@ -170,8 +191,6 @@
 			    <li class="next"><a href="#" id="next">다음 <span aria-hidden="true">&rarr;</span></a></li>
 			  </ul>
 			</nav>
-		 </div>
-		</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
@@ -228,28 +247,32 @@
 				}
 			});
 		});
+		
+		$('#commentDeleteBtn').on("click",function(){
+			$.ajax({
+				url:'${pageContext.request.contextPath}/taiji/article/comment/delete/',
+				type:"DELETE",
+				data : JSON.stringify({seq : $('#commentSeq').val(),password : $('#commentPassword').val()}),
+				dataType : "json",
+				contentType: "application/json; charset=utf-8",
+				success:function(result){
+					console.log(result);
+					alert("삭제 완료.");
+					$('#commentSeq').val('');
+					$('#commentPassword').val('');
+					$('#commentModal').modal('hide');
+					getView($('#articleSeq').val());
+					getArticle();
+				},
+				error:function(result){
+					alert("삭제 실패. 비밀번호가 다르거나 일시적인 서버 오류 입니다.");
+					console.log(result);
+				}
+			});
+		});
 
 		$('#commentPanel').on("click","#commentDeleteBtn",function(){
-			var password = prompt("비밀번호를 입력 하세요.");
-			var seq = $(this).attr("data-value");
-			if(password != ''){
-				$.ajax({
-					url:'${pageContext.request.contextPath}/taiji/article/comment/delete/',
-					type:"DELETE",
-					data : JSON.stringify({seq : seq,password : password}),
-					dataType : "json",
-					contentType: "application/json; charset=utf-8",
-					success:function(result){
-						console.log(result);
-						alert("삭제 완료.");
-						getView($('#articleSeq').val());
-					},
-					error:function(result){
-						alert("삭제 실패. 비밀번호가 다르거나 일시적인 서버 오류 입니다.");
-						console.log(result);
-					}
-				});
-			}
+			$('#commentSeq').val($(this).attr("data-value"));
 		});
 		
 		$('#articleWriteBtn').on("click",function(){
@@ -272,9 +295,11 @@
 				$.ajax({
 					url : '${pageContext.request.contextPath}/taiji/article/view/userLike/'+$('#articleSeq').val(),
 					type:'PUT',
+					asnyc:false,
 					success : function(result){
 						var resultData = JSON.parse(result);
 						$('#userLikeCnt').text(resultData.userLike);
+						getArticle();
 					},
 					error : function(result){
 						console.log(result);
@@ -294,6 +319,7 @@
 				type:'post',
 				success : function(result){
 					getView(result.articleSeq);
+					getArticle();
 				},
 				error : function(result){
 					for(var data in result.responseJSON){
@@ -341,7 +367,7 @@
 				var c = comments[i];
 				var $li = $('<li class="list-group-item">').html('<strong>'+c.userName + '</strong> : ' + c.content );
 				var $span = $('<span class="pull-right">').html(c.regDate);
-				var $button = $('<button type="button" id="commentDeleteBtn" data-value="'+c.seq+'" class="btn btn-default btn-xs pull-right">삭제</button>');
+				var $button = $('<button type="button" id="commentDeleteBtn" data-toggle="modal" data-target="#commentModal" data-whatever="@비밀번호 입력" data-value="'+c.seq+'" class="btn btn-default btn-xs pull-right">삭제</button>');
 				$('#commentList').append($li.append($button).append($span));
 			}
 			$('#userName').val('');
@@ -381,10 +407,11 @@
 					for(var i = 0 ; i < articles.length ; i ++){
 						var data = articles[i];
 						var $seqTd = $("<td>",{text:data.seq});
-						var $titleTd = $("<td>",{html:data.title + " <span style='color:red'>("+data.comments.length+")<span>"});
+						var $titleTd = $("<td>",{html:data.title + " <span style='color:red'>("+data.comments.length+")</span>"});
 						var $userTd = $("<td>",{text:data.userName});
-						var $userLikeTd = $("<td>",{text:data.userLike});
-						var $regDateTd = $("<td>",{text:data.regDate});
+						var $userLikeTd = $("<td>",{html:"<span class='badge' id='userLikeCnt'>"+data.userLike+"</span>"});
+						var date = new Date(data.regDate);
+						var $regDateTd = $("<td>",{text:(date.getYear()-100)+'/'+(date.getMonth()+1)+'/'+date.getDate()});
 						var $tr = $("<tr>",{
 											id:data.seq,
 											click:function(){

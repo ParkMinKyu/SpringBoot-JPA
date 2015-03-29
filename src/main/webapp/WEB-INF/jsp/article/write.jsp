@@ -42,12 +42,12 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="#">태지보이스</a></li>
-							<li><a href="#">방황기</a></li>
-							<li><a href="#">6집</a></li>
-							<li><a href="#">7집</a></li>
-							<li><a href="#">8집</a></li>
-							<li><a href="#">9집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/boys"/>">태지보이스</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo5"/>">방황기</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo6"/>">6집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo7"/>">7집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo8"/>">8집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/solo9"/>">9집</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -62,6 +62,8 @@
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
+	
+	<div class="container">
 	  <div class="panel panel-primary" id="writePanel">
 		  <div class="panel-heading">글 쓰기</div>	
 		  <div class="panel-body">
@@ -90,6 +92,7 @@
 			 
 		  </div>
 		</div>
+	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<!-- Latest compiled and minified JavaScript -->
