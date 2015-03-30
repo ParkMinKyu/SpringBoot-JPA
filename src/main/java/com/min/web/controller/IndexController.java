@@ -11,4 +11,9 @@ public class IndexController {
     public String main(){
 		return "redirect:/taiji/view/main";
 	}
+
+    @RequestMapping(value = "/robots.txt", method = RequestMethod.GET)
+    public String robot(){
+	return "robot";
+    }
 }
