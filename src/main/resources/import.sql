@@ -101,4 +101,39 @@ insert into article(title, content, user_name, reg_date) values(' 게시판 샘�
 insert into article(title, content, user_name, reg_date) values(' 게시판 샘플 데이터 312', ' 게시팜 샘플 데이터 입니다.<br>  게시팜 샘플 데이터 입니다.<br>  게시팜 샘플 데이터 입니다.<br> ', 'ㅇㅇ', '2014-03-14');
 insert into article(title, content, user_name, reg_date) values(' 게시판 샘플 데이터 44523', ' 게시팜 샘플 데이터 입니다.<br>  게시팜 샘플 데이터 입니다.<br>  게시팜 샘플 데이터 입니다.<br> ', 'ㅇㅇ', '2014-04-01');
 
-insert into comment(content,user_name,password,reg_date,article_seq) values('test','user','1234','2014-12-15',686);
+insert into comment(content,user_name,password,reg_date,article_seq) values('test','user','1234','2014-12-15',1);
+
+/*테스트 이미지*/
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/boys', 1, 'test1.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지3', '샘플 이미지 3 입니다.', '/resources/img/upload/boys', 1, 'test2.jpg');
+
+insert into imgarticle(title, comment, path, img_group, name) values('이미지2', '샘플 이미지 2 입니다.', '/resources/img/upload/solo5', 5, 'test.jpg');
+
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo6', 6, 'test1.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지2', '샘플 이미지 2 입니다.', '/resources/img/upload/solo6', 6, 'test2.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지4', '샘플 이미지 4 입니다.', '/resources/img/upload/solo6', 6, 'test3.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지7', '샘플 이미지 7 입니다.', '/resources/img/upload/solo6', 6, 'test4.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지7', '샘플 이미지 7 입니다.', '/resources/img/upload/solo6', 6, 'test5.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지7', '샘플 이미지 7 입니다.', '/resources/img/upload/solo6', 6, 'test6.jpg');
+
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo7', 7, 'test.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지2', '샘플 이미지 2 입니다.', '/resources/img/upload/solo7', 7, 'test1.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지3', '샘플 이미지 3 입니다.', '/resources/img/upload/solo7', 7, 'test2.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지5', '샘플 이미지 5 입니다.', '/resources/img/upload/solo7', 7, 'test3.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지8', '샘플 이미지 8 입니다.', '/resources/img/upload/solo7', 7, 'test4.jpg');
+
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test1.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test2.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test3.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test4.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test5.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo8', 8, 'test6.jpg');
+
+insert into imgarticle(title, comment, path, img_group, name) values('이미지2', '샘플 이미지 2 입니다.', '/resources/img/upload/solo9', 9, 'test1.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지3', '샘플 이미지 3 입니다.', '/resources/img/upload/solo9', 9, 'test2.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지5', '샘플 이미지 5 입니다.', '/resources/img/upload/solo9', 9, 'test3.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지8', '샘플 이미지 8 입니다.', '/resources/img/upload/solo9', 9, 'test4.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지1', '샘플 이미지 1 입니다.', '/resources/img/upload/solo9', 9, 'test5.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지2', '샘플 이미지 2 입니다.', '/resources/img/upload/solo9', 9, 'test6.jpg');
+insert into imgarticle(title, comment, path, img_group, name) values('이미지3', '샘플 이미지 3 입니다.', '/resources/img/upload/solo9', 9, 'test7.jpg');

@@ -30,9 +30,16 @@ public class WebController {
 	    return "question";
 	}
 	
-	@RequestMapping(value = "img/list/{type}", method = RequestMethod.GET)
-	public String imgList(@PathVariable("type")String type,Model model){
-	    model.addAttribute("type", type);
+	@RequestMapping(value = "img/list/{imgGroup}", method = RequestMethod.GET)
+	public String imgList(@PathVariable("imgGroup")long imgGroup,Model model){
+	    model.addAttribute("imgGroup", imgGroup);
 	    return "img/list";
 	}
+
+	@RequestMapping(value = "img/write/{imgGroup}", method = RequestMethod.GET)
+	public String imgWrite(@PathVariable("imgGroup")long imgGroup,Model model){
+		model.addAttribute("imgGroup", imgGroup);
+		return "img/write";
+	}
+
 }

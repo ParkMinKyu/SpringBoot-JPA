@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.min.web.handler.exception.support.QuestionNumberException;
 import com.min.web.service.cache.QuestionCache;
 
 
@@ -23,7 +22,6 @@ public class QuestionController {
 	
 	@RequestMapping(value = "{num}", method = RequestMethod.GET)
 	public ResponseEntity<?> getQuestion(@PathVariable(value="num")long num,HttpServletRequest req){
-		if(num > 20)throw new QuestionNumberException(num);
 		return new ResponseEntity<>(questionCache.getQuestion(num),HttpStatus.OK);
 	}
 	

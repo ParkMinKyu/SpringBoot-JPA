@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.min.web.config.NamingConfig;
 import com.min.web.domain.question.Answer;
 import com.min.web.domain.question.Question;
-import com.min.web.handler.exception.support.DomainNullPointException;
 import com.min.web.repository.question.AnswerRepository;
 import com.min.web.repository.question.QuestionRepository;
 import com.min.web.vo.question.AnswerVO;
@@ -43,12 +42,10 @@ public class QuestionCache {
 		long randomQuestion = (int) (Math.random() * questionCount)+1;
 		
 		Question question = questionRepository.findOne(randomQuestion);
-		if(question == null) throw new DomainNullPointException(num,"Question");
 		
 		long answerGroup = question.getAnswer().getAnswerGroup();
 		
 		List<Answer> answerList = answerRepository.findByAnswerGroup(answerGroup);
-		if(answerList.isEmpty()) throw new DomainNullPointException(answerGroup,"AnswerGroup");
 		
 		List<AnswerVO> responseAnswer = new ArrayList<>();
 		responseAnswer.add(modelMapper.map(question.getAnswer(), AnswerVO.class));

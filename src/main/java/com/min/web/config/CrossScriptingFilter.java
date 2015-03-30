@@ -14,14 +14,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class CrossScriptingFilter implements Filter {
  
-    private FilterConfig filterConfig;
+    private FilterConfig filterConfig = null;
 
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.filterConfig = filterConfig;
+        this.setFilterConfig(filterConfig);
     }
  
     public void destroy() {
-        this.filterConfig = null;
+        this.setFilterConfig(null);
     }
  
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -30,5 +30,13 @@ public class CrossScriptingFilter implements Filter {
         chain.doFilter(new RequestWrapper((HttpServletRequest) request), response);
  
     }
+
+	public FilterConfig getFilterConfig() {
+		return filterConfig;
+	}
+
+	public void setFilterConfig(FilterConfig filterConfig) {
+		this.filterConfig = filterConfig;
+	}
  
 }

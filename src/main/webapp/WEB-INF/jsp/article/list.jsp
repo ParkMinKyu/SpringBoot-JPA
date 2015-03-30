@@ -43,12 +43,12 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">짤방모음 <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="<c:url value="/taiji/view/img/list/boys"/>">태지보이스</a></li>
-							<li><a href="<c:url value="/taiji/view/img/list/solo5"/>">방황기</a></li>
-							<li><a href="<c:url value="/taiji/view/img/list/solo6"/>">6집</a></li>
-							<li><a href="<c:url value="/taiji/view/img/list/solo7"/>">7집</a></li>
-							<li><a href="<c:url value="/taiji/view/img/list/solo8"/>">8집</a></li>
-							<li><a href="<c:url value="/taiji/view/img/list/solo9"/>">9집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/1"/>">태지보이스</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/5"/>">방황기</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/6"/>">6집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/7"/>">7집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/8"/>">8집</a></li>
+							<li><a href="<c:url value="/taiji/view/img/list/9"/>">9집</a></li>
 						</ul>
 					</li>
 				</ul>
