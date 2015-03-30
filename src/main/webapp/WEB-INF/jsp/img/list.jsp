@@ -5,10 +5,12 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<meta name="google-site-verification" content="9JfQoMouf7bhbt7dNj-Hyh7UoqCa5yu41Cbpclivfg4" />
+<meta name="description=" content="서태지 팬 사이트 입니다. 서태지와 관련된 글 및 이미지, 짤방 을 등록 해 주세요 ">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>서빠력 테스트</title>
+<title>서태지 팬 사이트 - 서태지 짤방 게시판</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
@@ -35,8 +37,7 @@
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
 					<li><a href="<c:url value="/taiji/view/article/list"/>">자유 게시판</a></li>
 					<li><a href="<c:url value="/taiji/view/question"/>">서빠력 테스트</a></li>
@@ -64,6 +65,9 @@
 		<!-- /.container-fluid -->
 	</nav>
 	<div class="container">
+	<div class="page-header">
+		<h2>서태지 ${imgGroup }'s 시절</h2>
+	</div>
 	<div class="row">
 	  <div class="col-md-12">
 			<div class="btn-group pull-right">
@@ -118,7 +122,7 @@
 						var $caption = $('<div class="caption">');
 						var $title = $("<h3>",{text:data.title});
 						var $comment = $("<p>",{text:data.comment});
-						var $button = $('<p><a target="_blank" href="${pageContext.request.contextPath}'+data.path+'/'+data.name+'" class="btn btn-primary" role="button">크게 보기</a> <a href="#" id="imgLike" class="btn btn-default" data-value="'+data.seq+'" role="button">추천 <span class="badge">'+data.userLike+'</span></a></p>');
+						var $button = $('<p><a target="_blank" href="${pageContext.request.contextPath}'+data.path+'/'+data.name+'" class="btn btn-primary" role="button">크게 보기</a> <button type="button" id="imgLike" class="btn btn-default" data-value="'+data.seq+'" role="button">추천 <span class="badge">'+data.userLike+'</span></button></p>');
 						$row.append($col.append($thumbnail.append($img).append($caption).append($title).append($comment).append($button)));
 					}
 				$('#imgList').append($row);
