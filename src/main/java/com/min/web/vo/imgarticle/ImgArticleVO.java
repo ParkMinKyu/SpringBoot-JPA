@@ -12,7 +12,7 @@ public class ImgArticleVO {
 	@Size(min=4,max=100)
 	private String title;
 	
-	@Size(min=10,max=200)
+	@Size(min=4,max=200)
 	private String comment;
 	
 	private String path;
@@ -20,6 +20,8 @@ public class ImgArticleVO {
 	private long imgGroup;
 	
 	private String name;
+	
+	private String thumbName;
 	
 	private long userLike;
 }

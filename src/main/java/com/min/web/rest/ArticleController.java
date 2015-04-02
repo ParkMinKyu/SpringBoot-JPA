@@ -48,9 +48,9 @@ public class ArticleController {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@RequestMapping(value = "list/{page}", method = RequestMethod.GET)
-	public ResponseEntity<?> list(@PathVariable("page")int page){
-		PageRequest pageRequest = new PageRequest(page - PAGE_INDEX, PAGE_COUNT, Sort.Direction.DESC, "seq");
+	@RequestMapping(value = "list/{page}/{orderName}", method = RequestMethod.GET)
+	public ResponseEntity<?> list(@PathVariable("page")int page, @PathVariable("orderName")String orderName){
+		PageRequest pageRequest = new PageRequest(page - PAGE_INDEX, PAGE_COUNT, Sort.Direction.DESC, orderName);
 		Page<Article> articles = articleRepository.findAll(pageRequest);
 		Type listArticle =  new TypeToken<List<ArticleVO.ListResponse>>(){}.getType();
 		List<ArticleVO.ListResponse> articlesResponse = modelMapper.map(articles.getContent(), listArticle);

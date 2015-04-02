@@ -4,11 +4,15 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -41,11 +45,14 @@ public class ImgArticleController {
 	@Value("${image.upload.location}")
 	private String uploadLocation; 
 	
-	@RequestMapping(value="{imgGroup}",method=RequestMethod.GET)
-	public ResponseEntity<?> getImgArticle(@PathVariable("imgGroup")long imgGroup){
-		Type listType =  new TypeToken<List<ImgArticle>>(){}.getType();
-		List<ImgArticle> response = modelMapper.map(repository.findByImgGroup(imgGroup), listType);
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	@RequestMapping(value="list/{imgGroup}/{orderType}",method=RequestMethod.GET)
+	public ResponseEntity<?> getImgArticle(@PathVariable("imgGroup")long imgGroup,@PathVariable("orderType")String orderType){
+		if(orderType.equals("userLike"))
+			return new ResponseEntity<>(repository.findByImgGroupOrderByUserLikeDesc(imgGroup), HttpStatus.OK);
+		else
+			return new ResponseEntity<>(repository.findByImgGroupOrderBySeqDesc(imgGroup), HttpStatus.OK);
+		/*Type listType =  new TypeToken<List<ImgArticle>>(){}.getType();
+		List<ImgArticle> response = modelMapper.map(repository.findByImgGroupOrderBySeqDesc(imgGroup), listType);*/
 	}
 
 	@RequestMapping(value="imgLike/{seq}",method=RequestMethod.PUT)
@@ -59,8 +66,16 @@ public class ImgArticleController {
 	public ResponseEntity<?> imgUpload(@PathVariable("imgGroup")long imgGroup,@RequestParam("image")MultipartFile file,HttpSession session,@Valid ImgArticleVO articleVO, BindingResult result){
 		
 		if(result.hasErrors())return new ResponseEntity<> (result.getAllErrors(), HttpStatus.BAD_REQUEST);
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		if(!file.isEmpty()){
+			String type = file.getContentType().split("/")[0];
+	        if(!type.equals("image")){
+	        	resultMap.put("success", false);
+	        	resultMap.put("msg", "Checked File, This is Not Image Files");
+	        	return new ResponseEntity<> (resultMap, HttpStatus.BAD_REQUEST);
+	        }
+	        	
 			String path = "";
 			if(imgGroup == 1)path = "boys";
 			else if(imgGroup == 5)path = "solo5";
@@ -70,15 +85,19 @@ public class ImgArticleController {
 			else if(imgGroup == 9)path = "solo9";
 			String location = uploadLocation+path;
 			UUID ranName = UUID.randomUUID();
-			String prefix = file.getOriginalFilename();
+			String prefix = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
+			
 			try{
 				byte [] bytes = file.getBytes();
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(location+"/"+ranName.toString()+prefix)));
+				File image = new File(location+"/"+ranName.toString()+prefix);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(image));
 				stream.write(bytes);
 				stream.close();
+				Thumbnails.of(image).size(363, 300).toFile(new File(location+"/"+ranName+"_thumb"+prefix));
 				articleVO.setPath("/resources/img/upload/"+path);
 				articleVO.setImgGroup(imgGroup);
 				articleVO.setName(ranName.toString()+prefix);
+				articleVO.setThumbName(ranName+"_thumb"+prefix);
 				articleVO.setUserLike(0);
 				ImgArticle insertArticle = modelMapper.map(articleVO, ImgArticle.class);
 				return new ResponseEntity<> (repository.save(insertArticle), HttpStatus.OK);
@@ -87,11 +106,19 @@ public class ImgArticleController {
 				File img = new File(location+"/"+ranName.toString()+prefix);
 				if(img.isFile()){
 					img.delete();
+					File imgThum = new File(location+"/"+ranName+"_thumb"+prefix);
+					if(imgThum.isFile()){
+						imgThum.delete();
+					}
 				}
-				return new ResponseEntity<> ("File upload Fail", HttpStatus.BAD_REQUEST);
+				resultMap.put("success", false);
+	        	resultMap.put("msg", e.getMessage());
+				return new ResponseEntity<> (resultMap, HttpStatus.BAD_REQUEST);
 			}
 		}else{
-			return new ResponseEntity<> ("File is Empty", HttpStatus.BAD_REQUEST);
+			resultMap.put("success", false);
+        	resultMap.put("msg", "File is Empty");
+			return new ResponseEntity<> (resultMap, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

@@ -168,10 +168,8 @@
 			    <span class="sr-only">Toggle Dropdown</span>
 			  </button>
 			  <ul class="dropdown-menu" role="menu">
-			    <li><a href="#">추천 순 <span class="glyphicon glyphicon-thumbs-up"></span></a></li>
-			    <li><a href="#">날짜 순 <span class="glyphicon glyphicon-calendar"></span></a></li>
-			    <li class="divider"></li>
-			    <li><a href="#">초기화 <span class="glyphicon glyphicon-retweet"></span></a></li>
+			    <li><a href="#" id="orderUserLike">추천 순 <span class="glyphicon glyphicon-thumbs-up"></span></a></li>
+			    <li><a href="#" id="orderRegDate">날짜 순 <span class="glyphicon glyphicon-calendar"></span></a></li>
 			  </ul>
 			</div>
 		  	<table class="table table-striped">
@@ -193,6 +191,8 @@
 			    <li class="next"><a href="#" id="next">다음 <span aria-hidden="true">&rarr;</span></a></li>
 			  </ul>
 			</nav>
+		</div>
+	<input type="hidden" id="orderName" value="regDate">
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
@@ -202,6 +202,19 @@
 	<script type="text/javascript">
 	$(function(){
 		var page=0;
+		
+		$('#orderUserLike, #orderRegDate, #orderReset').on('click',function(){
+			var orderType = $('#orderType').val();
+			if(this.id == 'orderUserLike'){
+				 $('#orderName').val('userLike');
+			}else if(this.id == 'orderRegDate'){
+				$('#orderName').val('regDate');
+			}
+			getArticle();
+			$('#commentPanel').hide();
+			$('#viewPanel').hide();
+		});
+		
 		$('#prev,#next').on('click',function(e){
 			if(!$(this).parent().hasClass('disabled')){
 				$('#viewPanel').hide();
@@ -383,11 +396,13 @@
 		
 		//리스트 생성
 		function getArticle(type){
+			var orderName = $('#orderName').val();
+			var orderType = $('#orderType').val();
 			if(type=='prev')page>1?page--:page;
 			else if(type=='next')page++;
 			console.log(page);
 			$.ajax({
-				url : "${pageContext.request.contextPath}/taiji/article/list/"+page,
+				url : "${pageContext.request.contextPath}/taiji/article/list/"+page+"/"+orderName,
 				success : function(result){
 					var resultData = JSON.parse(result);
 					var articles = resultData.articlesResponse;

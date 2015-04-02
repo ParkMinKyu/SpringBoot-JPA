@@ -118,7 +118,7 @@
 				$('.next').removeClass('disabled');
 			}
 			$.ajax({
-				url : "<c:url value="/taiji/question/"/>"+num,
+				url : "${pageContext.request.contextPath}/taiji/question/"+num,
 				success : function(result){
 					var resultData = JSON.parse(result);
 					var question = resultData.question;

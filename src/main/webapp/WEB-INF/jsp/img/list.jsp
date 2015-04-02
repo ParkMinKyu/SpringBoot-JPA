@@ -78,10 +78,8 @@
 		   <span class="sr-only">Toggle Dropdown</span>
 		  </button>
 		  <ul class="dropdown-menu" role="menu">
-		    <li><a href="#">추천 순 <span class="glyphicon glyphicon-thumbs-up"></span></a></li>
-		    <li><a href="#">날짜 순 <span class="glyphicon glyphicon-calendar"></span></a></li>
-		    <li class="divider"></li>
-		    <li><a href="#">초기화 <span class="glyphicon glyphicon-retweet"></span></a></li>
+		    <li><a href="#" id="orderUserLike">추천 순 <span class="glyphicon glyphicon-thumbs-up"></span></a></li>
+		    <li><a href="#" id="orderSeq">날짜 순 <span class="glyphicon glyphicon-calendar"></span></a></li>
 		  </ul>
 		</div>
 		</div>
@@ -90,7 +88,7 @@
 	<br/>
 	
 	<div id="imgList"></div>
-	
+	<input type="hidden" id="orderType" value="seq">
 	</div>
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
@@ -100,38 +98,62 @@
 	<!-- custom jquery -->
 	<script type="text/javascript">
 	$(function(){
+		
+		$('#imgList').on('click','#imgWarnning',function(){
+			alert($(this).attr('data-value'));
+		});
+		
+		$('#orderSeq, #orderUserLike').on('click',function(){
+			if(this.id=='orderSeq'){
+				$('#orderType').val('seq');
+			}else if(this.id=='orderUserLike'){
+				$('#orderType').val('userLike');
+			}
+			getImgArticle();
+		});
+		
 		$('#writeBtn').on('click',function(){
 			location.href = '<c:url value="/taiji/view/img/write/${imgGroup}"/>';
 		});
 		
-		$.ajax({
-			url : '<c:url value="/taiji/imgarticle/${imgGroup }"/>',
-			type : 'get',
-			success : function(result){
-				console.log(result);
-				var resultData = JSON.parse(result);
-				var rowCnt = (resultData.length%4 == 0 ? parseInt(resultData.length/4) : parseInt((resultData.length/4)+1));
-				for(var k = 0 ; k < rowCnt ; k ++){
-					var $row = $('<div class="row">'); 
-					var colCnt = (((k+1)*4) > resultData.length ? parseInt(resultData.length) : parseInt(((k+1)*4)) );
-					for(var i = (k*4) ; i < colCnt ; i ++){
-						var data = resultData[i];
-						var $col = $('<div class="col-xs-12 col-sm-3">');
-						var $thumbnail = $("<div class='thumbnail'>");
-						var $img = $('<img src="${pageContext.request.contextPath}'+data.path+'/'+data.name+'" alt="'+data.title+'">');
-						var $caption = $('<div class="caption">');
-						var $title = $("<h3>",{text:data.title});
-						var $comment = $("<p>",{text:data.comment});
-						var $button = $('<p><a target="_blank" href="${pageContext.request.contextPath}'+data.path+'/'+data.name+'" class="btn btn-primary" role="button">크게 보기</a> <button type="button" id="imgLike" class="btn btn-default" data-value="'+data.seq+'" role="button">추천 <span class="badge">'+data.userLike+'</span></button></p>');
-						$row.append($col.append($thumbnail.append($img).append($caption).append($title).append($comment).append($button)));
+		function getImgArticle(){
+			$('#imgList').html('');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/taiji/imgarticle/list/${imgGroup }/'+$('#orderType').val(),
+				type : 'get',
+				success : function(result){
+					console.log(result);
+					var resultData = JSON.parse(result);
+					var rowCnt = (resultData.length%2 == 0 ? parseInt(resultData.length/2) : parseInt((resultData.length/2)+1));
+					for(var k = 0 ; k < rowCnt ; k ++){
+						var $row = $('<div class="row">'); 
+						var colCnt = (((k+1)*2) > resultData.length ? parseInt(resultData.length) : parseInt(((k+1)*2)) );
+						for(var i = (k*2) ; i < colCnt ; i ++){
+							var data = resultData[i];
+							var $col = $('<div class="col-xs-6">');
+							var $thumbnail = $("<div class='thumbnail'>");
+							var $img = $('<img src="${pageContext.request.contextPath}'+data.path+'/'+data.thumbName+'" alt="'+data.title+'">');
+							var $caption = $('<div class="caption">');
+							var $title = $("<h3>",{text:data.title});
+							var $comment = $("<p>",{text:data.comment});
+							var $button = $('<p><a target="_blank" href="${pageContext.request.contextPath}'
+									+data.path+'/'+data.name+'" class="btn btn-primary" role="button">크게 보기 ' 
+									+'<span class="glyphicon glyphicon-zoom-in"></span></a>' 
+									+' <button type="button" id="imgLike" class="btn btn-default" data-value="'+data.seq+'" role="button">추천 ' 
+									+'<span class="badge">'+data.userLike+'</span></button></p>');
+							$row.append($col.append($thumbnail.append($img).append($caption)
+									.append($title).append($comment).append($button.append(
+											' <button type="button" data-value='+data.seq+' id="imgWarnning" class="btn btn-danger">'
+											+'<span class="glyphicon glyphicon-info-sign"></span></button>'))));
+						}
+					$('#imgList').append($row);
 					}
-				$('#imgList').append($row);
+				},
+				error : function(result){
+					
 				}
-			},
-			error : function(result){
-				
-			}
-		});
+			});
+		}
 		
 		function setCookie(cname, cvalue, exdays) {
 		    var d = new Date();
@@ -179,6 +201,8 @@
 				});
 			}
 		});
+		
+		getImgArticle();
 	});
 	</script>
 </body>

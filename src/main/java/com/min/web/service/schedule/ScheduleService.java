@@ -27,6 +27,7 @@ public class ScheduleService {
 	@Value("${image.upload.location}")
 	private String uploadLocation; 
 	
+	//@Scheduled(fixedRate=5000)
 	@Scheduled(cron="0 0 3 * * *")
 	public void checkedImageFiles(){
 		log.info("---------------- Image File Check Start--------------------");
@@ -35,19 +36,29 @@ public class ScheduleService {
 		File parent = new File(uploadLocation);
 		if(parent.isDirectory()){
 			for(File dir : parent.listFiles()){
+				String logTitle = dir.getName() + " ToTal Image count : " + dir.listFiles().length; 
 				for(File file : dir.listFiles()){
 					if(file.isFile()){
-						List<ImgArticle> imgArticle = imgArticleRepository.findByName(file.getName());
-						if(imgArticle.isEmpty()){
-							file.delete();
-							log.info(uploadLocation + dir.getName()+"/"+file.getName() + " is Not File Data Removed");
-							cnt++;
+						if(file.getName().indexOf("_thumb") == -1){
+							List<ImgArticle> imgArticle = imgArticleRepository.findByName(file.getName());
+							if(imgArticle.isEmpty()){
+								if(file.delete()){
+									String prifix = file.getName().substring(file.getName().indexOf("."));
+									String thumbName = file.getName().replace(prifix, "_thumb"+prifix);
+									File thumbImg = new File(uploadLocation+dir.getName()+"/"+thumbName);
+									if(thumbImg.isFile()){
+										thumbImg.delete();
+									}
+									log.info(uploadLocation + dir.getName()+"/"+file.getName() + " is Not File Data Removed");
+									cnt++;
+								}
+							}
 						}
 					}
 				}
+				log.info(logTitle + " Image Remove Count : " + cnt);
 			}
 		}
-		log.info("Image Remove Count : " + cnt);
 		log.info("End Time is " + DATE_FORMAT.format(new Date()));
 		log.info("---------------- Image File Check END--------------------");
 	}

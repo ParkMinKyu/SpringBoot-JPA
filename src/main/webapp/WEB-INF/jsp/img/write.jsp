@@ -83,7 +83,7 @@
 			    <input class="form-control" type="text" name="comment" maxlength="200" id="comment" placeholder="이미지 설명"></input>
 			  </div>
 			  <div class="form-group">
-			  	<label for="image">Image</label>
+			  	<label for="image">Image <span style="color: red;">이미지 용량은 5M로 제한 합니다.</span></label>
 			    <input class="form-control" type="file" name="image" id="image"></input>
 			  </div>
 			  <button type="submit" id="backBtn" class="btn btn-default btn-lg pull-left"><span class="glyphicon glyphicon-arrow-left"></span> 뒤로</button>
@@ -129,14 +129,23 @@
 			                	console.log(result);
 			                	alert('이미지 등록 실패.');
 			                	var resultData = JSON.parse(result.responseText);
-			                	for(var i = 0 ; i < resultData.length ; i ++){
-			                		var data = resultData[i];
-									var html = '<div class="alert alert-warning alert-dismissible" role="alert" id="writeAlert">';
+			                	
+			                	if(resultData.success == false){
+			                		var html = '<div class="alert alert-warning alert-dismissible" role="alert" id="writeAlert">';
 									html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="false">&times;</span></button>';
-									html += '<strong>Warning!</strong> <a href="#'+data.field+'" class="alert-link">' + data.field + '</a>의 '+ data.defaultMessage + '</div>';
+									html += '<strong>Warning!</strong> '+ resultData.msg + '</div>';
 									$('#writeAlert').append(html);
 									location.href="#writeAlert";
-								}
+			                	}else{
+			                		for(var i = 0 ; i < resultData.length ; i ++){
+				                		var data = resultData[i];
+										var html = '<div class="alert alert-warning alert-dismissible" role="alert" id="writeAlert">';
+										html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="false">&times;</span></button>';
+										html += '<strong>Warning!</strong> <a href="#'+data.field+'" class="alert-link">' + data.field + '</a>의 '+ data.defaultMessage + '</div>';
+										$('#writeAlert').append(html);
+										location.href="#writeAlert";
+									}
+			                	}
 			                }
 		            	});
 		            }

@@ -30,6 +30,9 @@ public class ImgArticle {
 	@Column(nullable=false,length=100)
 	private String name;
 	
+	@Column(nullable=false,length=100)
+	private String thumbName;
+	
 	@Column(columnDefinition="bigint default '0'")
 	private long userLike;
 }
