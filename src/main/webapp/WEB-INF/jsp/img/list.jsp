@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta name="google-site-verification" content="9JfQoMouf7bhbt7dNj-Hyh7UoqCa5yu41Cbpclivfg4" />
-<meta name="description=" content="서태지 팬 사이트 입니다. 서태지와 관련된 글 및 이미지, 짤방 을 등록 해 주세요 ">
+<meta name="description" content="서태지 팬 사이트 입니다. 서태지와 관련된 글 및 이미지, 짤방 을 등록 해 주세요 ">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -130,7 +130,7 @@
 						var colCnt = (((k+1)*2) > resultData.length ? parseInt(resultData.length) : parseInt(((k+1)*2)) );
 						for(var i = (k*2) ; i < colCnt ; i ++){
 							var data = resultData[i];
-							var $col = $('<div class="col-xs-6">');
+							var $col = $('<div class="col-xs-12 col-sm-6">');
 							var $thumbnail = $("<div class='thumbnail'>");
 							var $img = $('<img src="${pageContext.request.contextPath}'+data.path+'/'+data.thumbName+'" alt="'+data.title+'">');
 							var $caption = $('<div class="caption">');
@@ -143,7 +143,7 @@
 									+'<span class="badge">'+data.userLike+'</span></button></p>');
 							$row.append($col.append($thumbnail.append($img).append($caption)
 									.append($title).append($comment).append($button.append(
-											' <button type="button" data-value='+data.seq+' id="imgWarnning" class="btn btn-danger">'
+											' <button type="button" data-value='+data.seq+' id="imgWarnning" class="btn btn-danger pull-right">'
 											+'<span class="glyphicon glyphicon-info-sign"></span></button>'))));
 						}
 					$('#imgList').append($row);

@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta name="google-site-verification" content="9JfQoMouf7bhbt7dNj-Hyh7UoqCa5yu41Cbpclivfg4" />
-<meta name="description=" content="서태지 팬 사이트 입니다. 서태지와 관련된 글 및 이미지, 짤방 을 등록 해 주세요 ">
+<meta name="description" content="서태지 팬 사이트 입니다. 서태지와 관련된 글 및 이미지, 짤방 을 등록 해 주세요 ">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -192,7 +192,7 @@
 			  </ul>
 			</nav>
 		</div>
-	<input type="hidden" id="orderName" value="regDate">
+	<input type="hidden" id="orderName" value="seq">
 	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/common.js"></script>
@@ -208,7 +208,7 @@
 			if(this.id == 'orderUserLike'){
 				 $('#orderName').val('userLike');
 			}else if(this.id == 'orderRegDate'){
-				$('#orderName').val('regDate');
+				$('#orderName').val('seq');
 			}
 			getArticle();
 			$('#commentPanel').hide();

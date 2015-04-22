@@ -1,1 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
+User-agent: *
+Disallow: /taiji/view/article/write
+Disallow: /taiji/view/img/write/1
+Disallow: /taiji/view/img/write/5
+Disallow: /taiji/view/img/write/6
+Disallow: /taiji/view/img/write/7
+Disallow: /taiji/view/img/write/8
+Disallow: /taiji/view/img/write/9
+Disallow: /taiji/article/comment/delete/
+Disallow: /taiji/article/comment/save
+Disallow: /taiji/article/delete/
+Disallow: /taiji/article/view/userLike/
+Disallow: /taiji/imgarticle/upload/9
+Disallow: /taiji/imgarticle/upload/1
+Disallow: /taiji/imgarticle/upload/5
+Disallow: /taiji/imgarticle/upload/6
+Disallow: /taiji/imgarticle/upload/7
+Disallow: /taiji/imgarticle/upload/8
+Disallow: /taiji/view/img/list/boys
+Disallow: /taiji/view/img/list/solo5
+Disallow: /taiji/view/img/list/solo9
+Disallow: /taiji/view/img/list/solo6
+Disallow: /taiji/view/img/list/solo7
