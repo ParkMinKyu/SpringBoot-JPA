@@ -6,3 +6,4 @@ src/main/resources/application-real.properties
 src/main/webapp/resources/img/upload/solo9/dc47fff0-a016-4475-b354-abebb30c973btest1.jpg
 *.jpg
 *.png
+*.gif
