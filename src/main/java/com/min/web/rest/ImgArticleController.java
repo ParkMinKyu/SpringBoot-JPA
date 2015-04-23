@@ -58,11 +58,19 @@ public class ImgArticleController {
 		article.setUserLike(article.getUserLike()+1);
 		return new ResponseEntity<>(repository.save(article), HttpStatus.OK);
 	}
+
+	@RequestMapping(value="blindImg/{seq}",method=RequestMethod.PUT)
+	public ResponseEntity<?> blindImg(@PathVariable("seq")long seq){
+		ImgArticle article = repository.findOne(seq);
+		article.setBlindImg(article.getBlindImg()+1);
+		return new ResponseEntity<>(repository.save(article), HttpStatus.OK);
+	}
 	
 	@RequestMapping(value = "upload/{imgGroup}", method = RequestMethod.POST)
 	public ResponseEntity<?> imgUpload(@PathVariable("imgGroup")long imgGroup,@RequestParam("image")MultipartFile file,HttpSession session,@Valid ImgArticleVO articleVO, BindingResult result){
 		
 		if(result.hasErrors())return new ResponseEntity<> (result.getAllErrors(), HttpStatus.BAD_REQUEST);
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		if(!file.isEmpty()){
@@ -81,6 +89,9 @@ public class ImgArticleController {
 			else if(imgGroup == 8)path = "solo8";
 			else if(imgGroup == 9)path = "solo9";
 			String location = uploadLocation+path;
+			File uploadFolder = new File(location);
+			if(!uploadFolder.isDirectory())
+				uploadFolder.mkdirs();
 			UUID ranName = UUID.randomUUID();
 			String prefix = file.getOriginalFilename().substring(file.getOriginalFilename().indexOf("."));
 			

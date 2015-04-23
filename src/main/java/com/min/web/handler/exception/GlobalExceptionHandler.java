@@ -15,7 +15,9 @@ import com.min.web.handler.exception.vo.ErrorVO;*/
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
-	/*@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	/*
+	 * TODO : 에러처리 나중에 추가
+	 * @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(value = NullPointerException.class)
 	public @ResponseBody ErrorVO nullPointerException(DomainNullPointException exception, HttpServletRequest req){
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;

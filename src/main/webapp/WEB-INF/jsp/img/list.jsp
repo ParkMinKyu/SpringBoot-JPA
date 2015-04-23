@@ -100,7 +100,18 @@
 	$(function(){
 		
 		$('#imgList').on('click','#imgWarnning',function(){
-			alert($(this).attr('data-value'));
+			var seq = $(this).attr('data-value');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/taiji/imgarticle/blindImg/'+seq,
+				type : 'PUT',
+				success : function(result){
+					alert('신고 처리 되었습니다.');
+				},
+				error : function(result){
+					
+				}
+			});
+			console.log($(this).attr('data-value'));
 		});
 		
 		$('#orderSeq, #orderUserLike').on('click',function(){
@@ -133,6 +144,11 @@
 							var $col = $('<div class="col-xs-12 col-sm-6">');
 							var $thumbnail = $("<div class='thumbnail'>");
 							var $img = $('<img src="${pageContext.request.contextPath}'+data.path+'/'+data.thumbName+'" alt="'+data.title+'">');
+							if(data.blindImg - data.userLike > 0){
+								var opacity = 10 - (data.blindImg - data.userLike);
+								opacity = opacity < 0 ? 0 : opacity;  
+								$img.css('opacity','0.'+opacity);
+							}
 							var $caption = $('<div class="caption">');
 							var $title = $("<h3>",{text:data.title});
 							var $comment = $("<p>",{text:data.comment});

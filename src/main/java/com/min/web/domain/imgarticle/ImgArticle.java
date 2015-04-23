@@ -35,4 +35,7 @@ public class ImgArticle {
 	
 	@Column(columnDefinition="bigint default '0'")
 	private long userLike;
+	
+	@Column(columnDefinition="bigint default '0'")
+	private long blindImg;
 }
