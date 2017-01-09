@@ -12,6 +12,8 @@
 
 ## eclipse 사용시
 
+(lombok install!!!!!!!!!!!!)
+
 1. import
 
 2. maven
